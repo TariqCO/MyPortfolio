@@ -25,7 +25,7 @@ npm run dev
 
 ## Contact 📫
 
-* Email: [tariq.official1712@example.com](mailto:tariq.official1712@example.com)
+* Email: [tariq.official1712@gmail.com](mailto:tariq.official1712@gmail.com)
 * LinkedIn: [Tariq on LinkedIn](https://www.linkedin.com/in/tariq-1712tr/)
 * GitHub: [TariqCO](https://github.com/TariqCO)
 
