@@ -69,8 +69,6 @@ Response Style:
 - Professional tone with a human touch
 `;
 
-
-
 /* -------------------- SECTION CONFIG -------------------- */
 const sectionMaps = {
   about: "#about",
@@ -124,13 +122,18 @@ export default function ChatBot() {
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
 
-  /* AI Response */
+  /* AI Response with Error Handling */
   const aiResponseFnc = async () => {
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: `${SYSTEM_CONTEXT}\nUser: ${user}\nAI:`,
-    });
-    return response.text;
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: `${SYSTEM_CONTEXT}\nUser: ${user}\nAI:`,
+      });
+      return response.text || "Sorry, I couldn't generate a response.";
+    } catch (error) {
+      console.error("AI Error:", error);
+      return "Oops! Something went wrong. Please try again later.";
+    }
   };
 
   /* Submit */
@@ -139,7 +142,6 @@ export default function ChatBot() {
     if (!user.trim()) return;
 
     setChatHistory((prev) => [...prev, { chat: "user", message: user }]);
-
     setUser("");
     setLoading(true);
 
