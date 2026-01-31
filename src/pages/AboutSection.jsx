@@ -30,7 +30,7 @@ const AboutSection = () => {
             shadow-xl hover:shadow-2xl transition"
           >
             <img
-              src="./public/images/profile.jpeg"
+              src="/images/profile.jpeg"
               alt="Profile"
               className="relative z-20 w-full h-full object-cover"
             />

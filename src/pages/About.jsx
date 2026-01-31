@@ -17,7 +17,7 @@ const About = () => {
         >
           <div className="w-64 h-64 md:w-80 md:h-80 rounded-3xl overflow-hidden shadow-2xl border border-gray-200">
             <img
-              src="./public/images/profile2.jpeg" 
+              src="/images/profile2.jpeg" 
               alt="Tariq Profile"
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
             />

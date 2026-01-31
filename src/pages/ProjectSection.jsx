@@ -8,7 +8,7 @@ const projects = [
     description:
       "AI-powered crypto prediction engine with live fulfillment tracking and Gemini-based analysis.",
     tech: ["React", "Node", "MongoDB", "Gemini"],
-    image: "./public/images/crypto1.PNG",
+    image: "/images/crypto1.PNG",
   },
   {
     title: "Hotel Booking System",
