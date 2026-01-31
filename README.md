@@ -1,4 +1,4 @@
-
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/4a9535f3-7f32-4e37-a8de-1d21738e85c8" />
 ---
 
 # Portfolio Website 🌐
@@ -17,7 +17,7 @@ React.js, Tailwind CSS, Vite, Framer Motion, ShadCN UI
 ## Run Locally 🚀
 
 ```bash
-git clone https://github.com/TariqCO/portfolio-website.git
+git clone https://github.com/TariqCO/MyPortfolio.git
 cd portfolio-website
 npm install
 npm run dev
