@@ -1,3 +1,4 @@
+
 ---
 
 # Portfolio Website 🌐
@@ -16,7 +17,7 @@ React.js, Tailwind CSS, Vite, Framer Motion, ShadCN UI
 ## Run Locally 🚀
 
 ```bash
-git clone https://github.com/YourUsername/portfolio-website.git
+git clone https://github.com/TariqCO/portfolio-website.git
 cd portfolio-website
 npm install
 npm run dev
@@ -24,9 +25,9 @@ npm run dev
 
 ## Contact 📫
 
-* Email: [your.email@example.com](mailto:tariq.official1712@example.com)
-* LinkedIn: [Your LinkedIn]([https://www.linkedin.com/in/yourprofile](https://www.linkedin.com/in/tariq-1712tr/))
-* GitHub: [Your GitHub](https://github.com/TariqCO)
+* Email: [tariq.official1712@example.com](mailto:tariq.official1712@example.com)
+* LinkedIn: [Tariq on LinkedIn](https://www.linkedin.com/in/tariq-1712tr/)
+* GitHub: [TariqCO](https://github.com/TariqCO)
 
 ---
 
