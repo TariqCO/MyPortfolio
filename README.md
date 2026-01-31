@@ -1,5 +1,3 @@
-Got it! Here's a concise version for your GitHub portfolio README:
-
 ---
 
 # Portfolio Website 🌐
@@ -26,10 +24,10 @@ npm run dev
 
 ## Contact 📫
 
-* Email: [your.email@example.com](mailto:your.email@example.com)
-* LinkedIn: [Your LinkedIn](https://www.linkedin.com/in/yourprofile)
-* GitHub: [Your GitHub](https://github.com/YourUsername)
+* Email: [your.email@example.com](mailto:tariq.official1712@example.com)
+* LinkedIn: [Your LinkedIn]([https://www.linkedin.com/in/yourprofile](https://www.linkedin.com/in/tariq-1712tr/))
+* GitHub: [Your GitHub](https://github.com/TariqCO)
 
 ---
 
-If you want, I can also make an **even punchier, one-screen version** perfect for GitHub with badges and emojis to make it stand out. Do you want me to do that?
+
