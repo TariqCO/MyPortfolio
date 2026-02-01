@@ -10,7 +10,6 @@ const ai = new GoogleGenAI({
 });
 
 /* -------------------- SYSTEM CONTEXT -------------------- */
-
 const SYSTEM_CONTEXT = `
 You are an AI assistant answering questions about Tariq Rasheed only.
 
@@ -153,114 +152,121 @@ export default function ChatBot() {
   };
 
   return (
-    <div className="fixed bottom-8 left-8 z-50 w-[85vw] ">
-      <AnimatePresence>
-        {chatBoxOpen ? (
-          <motion.div
-            ref={chatRef}
-            initial={{ opacity: 0, scale: 0.9, y: 40 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 40 }}
-            transition={{ duration: 0.25 }}
-            className="w-full sm:w-[340px] h-[70vh] sm:h-[480px]
-                       flex flex-col rounded-2xl
-                       bg-[#1a1a1ad9] backdrop-blur-xl
-                       border border-[#2f2f2f]
-                       shadow-2xl overflow-hidden"
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-[#2f2f2f] text-white">
-              <div>
-                <h2 className="text-sm font-semibold">AI Assistant</h2>
-                <p className="text-xs text-gray-400">
-                  {loading ? "Typing..." : "Online"}
-                </p>
-              </div>
-              <button
-                onClick={() => setChatBoxOpen(false)}
-                className="text-gray-400 hover:text-white text-sm"
-              >
-                ✕
-              </button>
+<>
+  {/* CHAT BOX WRAPPER */}
+  <div className="fixed bottom-8 left-1/2 -translate-x-1/2
+                  sm:left-8 sm:translate-x-0 z-50
+                  w-[95vw] sm:w-auto">
+    <AnimatePresence>
+      {chatBoxOpen && (
+        <motion.div
+          ref={chatRef}
+          initial={{ opacity: 0, scale: 0.9, y: 40 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 40 }}
+          transition={{ duration: 0.25 }}
+          className="w-full sm:w-[340px] h-[70vh] sm:h-[480px]
+                     flex flex-col rounded-2xl
+                     bg-[#1a1a1ad9] backdrop-blur-xl
+                     border border-[#2f2f2f]
+                     shadow-2xl overflow-hidden"
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#2f2f2f] text-white">
+            <div>
+              <h2 className="text-sm font-semibold">AI Assistant</h2>
+              <p className="text-xs text-gray-400">
+                {loading ? "Typing..." : "Online"}
+              </p>
             </div>
+            <button
+              onClick={() => setChatBoxOpen(false)}
+              className="text-gray-400 hover:text-white text-sm"
+            >
+              ✕
+            </button>
+          </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-3 space-y-2 overscroll-contain">
-              {chatHistory.map((chat, i) => {
-                const sections = extractSections(chat.message);
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-3 space-y-2 overscroll-contain">
+            {chatHistory.map((chat, i) => {
+              const sections = extractSections(chat.message);
 
-                return (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className={`max-w-[80%] px-3 py-2 rounded-xl text-sm text-white
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className={`max-w-[80%] px-3 py-2 rounded-xl text-sm text-white
                     ${
                       chat.chat === "user"
                         ? "self-start bg-gradient-to-br from-[#00a99d] to-[#008a7a]"
                         : "self-end bg-[#2a2a2a]"
                     }`}
-                  >
-                    <p>{chat.message}</p>
-
-                    {chat.chat === "ai" && sections.length > 0 && (
-                      <div className="flex gap-2 flex-wrap mt-2">
-                        {sections.map((sec) => (
-                          <SectionButton
-                            key={sec}
-                            label={`Go to ${sec}`}
-                            href={sectionMaps[sec]}
-                            onClick={() => setChatBoxOpen(false)}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </motion.div>
-                );
-              })}
-
-              {loading && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="self-end bg-[#2a2a2a] text-white px-3 py-2 rounded-xl text-sm"
                 >
-                  AI is thinking…
-                </motion.div>
-              )}
-              <div ref={endRef} />
-            </div>
+                  <p>{chat.message}</p>
 
-            {/* Input */}
-            <form
-              onSubmit={handleSubmit}
-              className="flex items-center gap-2 p-3 border-t border-[#2f2f2f]"
-            >
-              <input
-                type="text"
-                placeholder="Ask something about Tariq..."
-                className="flex-1 bg-[#262626] text-white text-base sm:text-sm
-                           rounded-xl px-4 py-3 sm:py-2 outline-none
-                           focus:ring-1 focus:ring-[#00a99d]"
-                value={user}
-                onChange={(e) => setUser(e.target.value)}
-              />
-              <button
-                type="submit"
-                className="bg-gradient-to-br from-[#00a99d] to-[#008a7a]
-                           p-3 sm:p-2 rounded-xl text-white hover:opacity-90"
-              >
-                <SendHorizontal size={18} />
-              </button>
-            </form>
-          </motion.div>
-        ) : (
-          <div  onClick={() => setChatBoxOpen(true)}>
-            <Button />
+                  {chat.chat === "ai" && sections.length > 0 && (
+                    <div className="flex gap-2 flex-wrap mt-2">
+                      {sections.map((sec) => (
+                        <SectionButton
+                          key={sec}
+                          label={`Go to ${sec}`}
+                          href={sectionMaps[sec]}
+                          onClick={() => setChatBoxOpen(false)}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
+
+            {loading && (
+              <div className="self-end bg-[#2a2a2a] text-white px-3 py-2 rounded-xl text-sm">
+                AI is thinking…
+              </div>
+            )}
+            <div ref={endRef} />
           </div>
-        )}
-      </AnimatePresence>
+
+          {/* Input */}
+          <form
+            onSubmit={handleSubmit}
+            className="flex items-center gap-2 p-3 border-t border-[#2f2f2f]"
+          >
+            <input
+              type="text"
+              placeholder="Ask something about Tariq..."
+              className="flex-1 bg-[#262626] text-white text-base sm:text-sm
+                         rounded-xl px-4 py-3 sm:py-2 outline-none
+                         focus:ring-1 focus:ring-[#00a99d]"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="bg-gradient-to-br from-[#00a99d] to-[#008a7a]
+                         p-3 sm:p-2 rounded-xl text-white hover:opacity-90"
+            >
+              <SendHorizontal size={18} />
+            </button>
+          </form>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </div>
+
+  {/* BUTTON WRAPPER */}
+  {!chatBoxOpen && (
+    <div className="fixed bottom-8 left-8 sm:bottom-8 sm:left-8 z-50">
+      <div onClick={() => setChatBoxOpen(true)}>
+        <Button />
+      </div>
     </div>
+  )}
+</>
+
   );
 }
