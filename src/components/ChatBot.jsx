@@ -10,6 +10,7 @@ const ai = new GoogleGenAI({
 });
 
 /* -------------------- SYSTEM CONTEXT -------------------- */
+
 const SYSTEM_CONTEXT = `
 You are an AI assistant answering questions about Tariq Rasheed only.
 
@@ -152,7 +153,7 @@ export default function ChatBot() {
   };
 
   return (
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 sm:left-6 sm:translate-x-0 z-50 w-[95vw] sm:w-auto">
+    <div className="fixed bottom-8 left-8 z-50 w-[85vw] ">
       <AnimatePresence>
         {chatBoxOpen ? (
           <motion.div
@@ -255,7 +256,7 @@ export default function ChatBot() {
             </form>
           </motion.div>
         ) : (
-          <div onClick={() => setChatBoxOpen(true)}>
+          <div  onClick={() => setChatBoxOpen(true)}>
             <Button />
           </div>
         )}
