@@ -10,20 +10,7 @@ const projects = [
     tech: ["React", "Node", "MongoDB", "Gemini"],
     image: "/images/crypto1.PNG",
   },
-  {
-    title: "Hotel Booking System",
-    description:
-      "OYO-style hotel booking platform with advanced filters, admin dashboard, and availability logic.",
-    tech: ["React", "Express", "MongoDB"],
-    image: "/images/hotel-booking.jpg",
-  },
-  {
-    title: "Modern Blog Application",
-    description:
-      "Editorial-style blog built with Vite, ShadCN UI, and a full content dashboard.",
-    tech: ["React", "Vite", "ShadCN"],
-    image: "/images/blog-app.jpg",
-  },
+
 ];
 
 export default function ProjectsSection() {
