@@ -8,7 +8,13 @@ import {
   FaNodeJs,
   FaGitAlt,
 } from "react-icons/fa";
-import { SiTailwindcss, SiFramer, SiMongodb, SiExpress, SiPostman } from "react-icons/si";
+import {
+  SiTailwindcss,
+  SiFramer,
+  SiMongodb,
+  SiExpress,
+  SiPostman,
+} from "react-icons/si";
 
 const skillsData = [
   {
@@ -58,8 +64,8 @@ const SkillsSection = () => {
             My <span className="text-gray-900">Skills</span>
           </h2>
           <p className="text-gray-600 max-w-lg text-base">
-            Technologies and tools I use to build scalable, performant, and
-            visually polished applications.
+            Turning concepts into functional applications by combining
+            creativity, logic, and technology.
           </p>
         </motion.div>
 
@@ -75,9 +81,7 @@ const SkillsSection = () => {
               whileHover={{ y: -8 }}
               className="bg-white border border-gray-200 rounded-2xl p-7 shadow-sm hover:shadow-xl transition-all"
             >
-              <h3 className="text-xl font-semibold mb-6">
-                {group.title}
-              </h3>
+              <h3 className="text-xl font-semibold mb-6">{group.title}</h3>
 
               <div className="space-y-6">
                 {group.skills.map((skill, i) => (

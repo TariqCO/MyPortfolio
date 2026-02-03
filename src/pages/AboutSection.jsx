@@ -106,9 +106,9 @@ const AboutSection = () => {
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
             <a href="#contact">
-            <button className="px-6 py-3 bg-black text-white rounded-md text-sm font-medium hover:bg-gray-900 shadow-md transition">
-              Contact Me
-            </button>
+              <button className="px-6 py-3 bg-black text-white rounded-md text-sm font-medium hover:bg-gray-900 shadow-md transition">
+                Contact Me
+              </button>
             </a>
 
             <a href="files/MyResume.pdf" download>

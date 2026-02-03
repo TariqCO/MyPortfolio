@@ -20,7 +20,7 @@ const HeroSection = () => {
 
         {/* Subheading */}
         <h2 className="text-xl md:text-2xl text-gray-600 mt-3 drop-shadow-sm">
-          Web Developer & AI Integration Enthusiast
+          Web Developer & AI Enthusiast
         </h2>
 
         {/* Description */}

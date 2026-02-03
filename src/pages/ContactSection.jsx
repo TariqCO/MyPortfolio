@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Mail, Github, Linkedin, ArrowUp, Instagram } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import VolumeButton from "../personelComp/VolumeBtn";
+
 
 export default function ContactSection() {
   // Smooth scroll function
