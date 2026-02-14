@@ -31,7 +31,7 @@ Information Control Rules:
   • Learning, mindset, or future goals → only when asked
 
 Availability:
-Currently not available.
+Currently available.
 
 Knowledge Base (use only when relevant):
 
