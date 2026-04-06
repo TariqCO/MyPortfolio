@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, ChevronLeft, ChevronRight, Github,  } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, Github } from "lucide-react";
 
 const projects = [
   {
@@ -10,23 +10,27 @@ const projects = [
     tech: ["React", "Node", "MongoDB", "Gemini"],
     image: "/images/crypto1.PNG",
     github: "https://github.com/TariqCO/cryptoPrediction",
+    link: "https://github.com/TariqCO/cryptoPrediction",
   },
   {
-  title: "London Aluminium",
-  description:
-    "Luxury European aluminium glazing website featuring high-end architectural glass solutions with a modern, minimal design.",
-  tech: ["React", "Tailwind CSS", "Framer Motion"],
-  image: "/images/london.PNG",
-  github: "https://github.com/TariqCO/AluminiumWindowUI"
-}
-
+    title: "Invitation Site",
+    description:
+      "Beautiful Wedding Invitation website with RSVP features like send form response to whatsApp and save response to the client's Google sheets. ",
+    tech: ["React", "Tailwind CSS", "Framer Motion"],
+    image: "/images/wedding.PNG",
+    github: "https://github.com/TariqCO/wedding",
+    link: "https://wedding-git-main-tariqs-projects-b75217c0.vercel.app/",
+  },
 ];
 
 export default function ProjectsSection() {
   const scrollRef = useRef(null);
 
   return (
-    <section id="projects" className="w-full py-24 bg-background overflow-hidden">
+    <section
+      id="projects"
+      className="w-full py-24 bg-background overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-6">
         {/* HEADER */}
         <motion.div
@@ -37,9 +41,12 @@ export default function ProjectsSection() {
           className="flex flex-col md:flex-row items-start md:items-end justify-between mb-14 gap-4 md:gap-0"
         >
           <div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-2">Selected Work</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-2">
+              Selected Work
+            </h2>
             <p className="text-muted-foreground max-w-xl">
-              Projects I’ve cooked up while exploring, experimenting, and leveling up my dev skills.
+              Projects I’ve cooked up while exploring, experimenting, and
+              leveling up my dev skills.
             </p>
           </div>
 
@@ -94,7 +101,9 @@ export default function ProjectsSection() {
                 {/* CONTENT */}
                 <div className="relative z-10 h-full p-6 sm:p-8 flex flex-col justify-end text-white">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-xl sm:text-2xl font-semibold">{project.title}</h3>
+                    <h3 className="text-xl sm:text-2xl font-semibold">
+                      {project.title}
+                    </h3>
 
                     <div className="flex gap-2">
                       {/* GitHub Button */}
@@ -109,9 +118,14 @@ export default function ProjectsSection() {
                         </a>
                       )}
 
-                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white/30 flex items-center justify-center backdrop-blur group-hover:bg-white/10 transition">
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white/30 flex items-center justify-center backdrop-blur group-hover:bg-white/10 transition"
+                      >
                         <ArrowUpRight size={18} />
-                      </div>
+                      </a>
                     </div>
                   </div>
 
