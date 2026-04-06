@@ -10,7 +10,7 @@ const projects = [
     tech: ["React", "Node", "MongoDB", "Gemini"],
     image: "/images/crypto1.PNG",
     github: "https://github.com/TariqCO/cryptoPrediction",
-    link: "https://github.com/TariqCO/cryptoPrediction",
+    link: "https://crypto-prediction-gew7.vercel.app/",
   },
   {
     title: "Invitation Site",
