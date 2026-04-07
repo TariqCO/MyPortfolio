@@ -19,7 +19,7 @@ const projects = [
     tech: ["React", "Tailwind CSS", "Framer Motion"],
     image: "/images/wedding.PNG",
     github: "https://github.com/TariqCO/wedding",
-    link: "https://wedding-git-main-tariqs-projects-b75217c0.vercel.app/",
+    link: "https://wedding-eight-wheat-48.vercel.app/",
   },
 ];
 
