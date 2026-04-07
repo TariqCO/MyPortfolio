@@ -23,29 +23,6 @@ const projects = [
     image: "/images/wedding.PNG",
     github: "https://github.com/TariqCO/wedding",
     link: "https://wedding-git-main-tariqs-projects-b75217c0.vercel.app/",
-    highlights: ["WhatsApp RSVP integration", "Google Sheets sync", "Mobile-first layout"],
-  },
-  {
-    title: "AI Code Reviewer",
-    tag: "AI · Backend Tool",
-    description:
-      "AI-powered tool that accepts any code snippet and returns structured, actionable feedback via the Gemini API. Clean Express backend with rate limiting and error handling.",
-    tech: ["Node.js", "Express.js", "Gemini API"],
-    image: "/images/crypto1.PNG",
-    github: "https://github.com/TariqCO/ai-code-reviewer",
-    link: "https://github.com/TariqCO/ai-code-reviewer",
-    highlights: ["Gemini-powered feedback", "Rate limiting", "Structured responses"],
-  },
-  {
-    title: "Blog Application",
-    tag: "Full-Stack · MERN",
-    description:
-      "Full-stack blogging platform with registration, login, full post CRUD, and Role-Based Access Control so authors can only modify their own content.",
-    tech: ["React", "Node.js", "MongoDB", "JWT", "RBAC"],
-    image: "/images/crypto1.PNG",
-    github: "https://github.com/TariqCO/blog-application",
-    link: "https://github.com/TariqCO/blog-application",
-    highlights: ["Role-based access control", "Refresh token rotation", "Full CRUD"],
   },
 ];
 
