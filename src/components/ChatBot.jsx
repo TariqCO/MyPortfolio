@@ -1,13 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { GoogleGenAI } from "@google/genai";
 import { useEffect, useRef, useState } from "react";
 import Button from "../personelComp/Button";
 import { SendHorizontal } from "lucide-react";
 
-/* -------------------- AI INIT -------------------- */
-const ai = new GoogleGenAI({
-  apiKey: import.meta.env.VITE_GEMINI_API_KEY,
-});
+/* -------------------- GROQ CONFIG -------------------- */
+const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+const GROQ_MODEL = "llama-3.3-70b-versatile"; // or "mixtral-8x7b-32768"
 
 /* -------------------- SYSTEM CONTEXT -------------------- */
 const SYSTEM_CONTEXT = `
@@ -258,14 +256,32 @@ export default function ChatBot() {
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
 
-  /* AI Response with Error Handling */
+  /* AI Response with Groq */
   const aiResponseFnc = async () => {
     try {
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: `${SYSTEM_CONTEXT}\nUser: ${user}\nAI:`,
+      const response = await fetch(GROQ_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: GROQ_MODEL,
+          messages: [
+            { role: "system", content: SYSTEM_CONTEXT },
+            { role: "user", content: user },
+          ],
+          max_tokens: 1024,
+          temperature: 0.7,
+        }),
       });
-      return response.text || "Sorry, I couldn't generate a response.";
+
+      if (!response.ok) {
+        throw new Error(`Groq API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.choices?.[0]?.message?.content || "Sorry, I couldn't generate a response.";
     } catch (error) {
       console.error("AI Error:", error);
       return "Oops! Something went wrong. Please try again later.";
