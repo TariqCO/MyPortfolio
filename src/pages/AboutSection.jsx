@@ -279,7 +279,7 @@ const AboutSection = () => {
               <a href="#contact" className="btn-primary-about">
                 Contact Me
               </a>
-              <a href="/MyResume.docx" download className="btn-secondary-about">
+              <a href="images/MyResume.pdf" download className="btn-secondary-about">
                 Download Resume
               </a>
             </motion.div>
