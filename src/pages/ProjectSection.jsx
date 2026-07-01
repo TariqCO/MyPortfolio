@@ -2,34 +2,8 @@ import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Github } from "lucide-react";
 
-const projects = [
-  {
-    title: "Crypto Prediction Platform",
-    tag: "AI · Full-Stack",
-    description:
-      "Full-stack app for predicting cryptocurrency price movements with real-time result validation and Gemini AI-generated plain-language market summaries.",
-    tech: ["React", "Node.js", "MongoDB", "Gemini AI", "JWT"],
-    image: "/images/crypto1.PNG",
-    github: "https://github.com/TariqCO/cryptoPrediction",
-    link: "https://crypto-prediction-gew7.vercel.app/",
-    highlights: ["Gemini AI summaries", "JWT + refresh token auth", "Real-time validation"],
-    accent: "#00b8ac",
-    accentDark: "#00635d",
-  },
-  {
-    title: "Wedding Invitation Site",
-    tag: "Freelance · Client Work",
-    description:
-      "Custom wedding website with RSVP form that sends responses to WhatsApp and saves to Google Sheets. Mobile-first, animated, and delivered end-to-end for a real client.",
-    tech: ["React", "Tailwind CSS", "Framer Motion", "Google Sheets API"],
-    image: "/images/wedding.PNG",
-    github: "https://github.com/TariqCO/wedding",
-    link: "https://wedding-eight-wheat-48.vercel.app/",
-    highlights: ["WhatsApp RSVP integration", "Google Sheets sync", "Mobile-first layout"],
-    accent: "#d4a853",
-    accentDark: "#8a6520",
-  },
-];
+// Projects temporarily removed — add entries back here when ready
+const projects = [];
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -267,6 +241,15 @@ export default function ProjectsSection() {
             #ffffff;
           background-size: 44px 44px;
         }
+
+        /* ── Empty state ── */
+        .ps-empty {
+          border-radius: 20px;
+          border: 1.5px dashed #d1d5db;
+          padding: 64px 24px;
+          text-align: center;
+          background: rgba(0,144,135,0.02);
+        }
       `}</style>
 
       <section id="projects" className="ps-root ps-section w-full py-24 overflow-hidden">
@@ -299,224 +282,265 @@ export default function ProjectsSection() {
               </motion.p>
             </div>
 
-            <motion.div custom={3} variants={fadeUp} className="flex items-center gap-3 shrink-0">
-              <span className="text-xs text-gray-400 font-medium mr-1">
-                {projects.length} projects
-              </span>
-              <button className="ps-scroll-btn" onClick={() => scroll(-1)}>
-                <ChevronLeft size={16} />
-              </button>
-              <button className="ps-scroll-btn" onClick={() => scroll(1)}>
-                <ChevronRight size={16} />
-              </button>
-            </motion.div>
+            {projects.length > 0 && (
+              <motion.div custom={3} variants={fadeUp} className="flex items-center gap-3 shrink-0">
+                <span className="text-xs text-gray-400 font-medium mr-1">
+                  {projects.length} projects
+                </span>
+                <button className="ps-scroll-btn" onClick={() => scroll(-1)}>
+                  <ChevronLeft size={16} />
+                </button>
+                <button className="ps-scroll-btn" onClick={() => scroll(1)}>
+                  <ChevronRight size={16} />
+                </button>
+              </motion.div>
+            )}
           </motion.div>
 
+          {/* ── Empty state ── */}
+          {projects.length === 0 && (
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              className="ps-empty"
+            >
+              <p className="ps-serif" style={{ fontSize: "1.4rem", color: "#111827", marginBottom: 8 }}>
+                Projects coming soon
+              </p>
+              <p className="text-sm text-gray-400 mb-6 max-w-sm mx-auto leading-relaxed">
+                This section is being refreshed. In the meantime, check out my work on GitHub.
+              </p>
+              <a
+                href="https://github.com/TariqCO"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "10px 24px", borderRadius: 99,
+                  background: "rgba(0,144,135,0.08)",
+                  border: "1px solid rgba(0,144,135,0.25)",
+                  color: "#009087", fontSize: "0.72rem",
+                  fontWeight: 600, letterSpacing: "0.1em",
+                  textTransform: "uppercase", textDecoration: "none",
+                  transition: "background 0.2s, border-color 0.2s",
+                }}
+              >
+                <Github size={14} /> View GitHub <ArrowUpRight size={13} />
+              </a>
+            </motion.div>
+          )}
+
           {/* ── Cards ── */}
-          <div
-            ref={scrollRef}
-            className="ps-scroll flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4 touch-pan-x"
-          >
-            {projects.map((p, i) => (
+          {projects.length > 0 && (
+            <div
+              ref={scrollRef}
+              className="ps-scroll flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4 touch-pan-x"
+            >
+              {projects.map((p, i) => (
+                <motion.div
+                  key={i}
+                  custom={i}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  variants={fadeUp}
+                  className="snap-start shrink-0 w-[88%] sm:w-[70%] md:w-[54%] lg:w-[44%]"
+                  onMouseEnter={() => setHovered(i)}
+                  onMouseLeave={() => setHovered(null)}
+                >
+                  <div className="ps-card">
+
+                    {/* Image */}
+                    <img src={p.image} alt={p.title} className="ps-img" />
+
+                    {/* Gradient overlay — two layers: base + accent tint */}
+                    <div
+                      className="ps-overlay"
+                      style={{
+                        background: `linear-gradient(
+                          170deg,
+                          rgba(0,0,0,0.08) 0%,
+                          rgba(0,0,0,0.3) 38%,
+                          rgba(0,0,0,0.82) 72%,
+                          rgba(0,0,0,0.95) 100%
+                        )`,
+                      }}
+                    />
+                    {/* Accent color wash on hover */}
+                    <div
+                      className="ps-overlay"
+                      style={{
+                        background: `radial-gradient(ellipse at 50% 100%, ${p.accent}22 0%, transparent 70%)`,
+                        opacity: hovered === i ? 1 : 0,
+                        transition: "opacity 0.4s ease",
+                      }}
+                    />
+
+                    {/* Top strip */}
+                    <div className="ps-top">
+                      <span className="ps-pill">{p.tag}</span>
+                      <div className="ps-links">
+                        {p.github && (
+                          <a
+                            href={p.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="ps-icon-btn"
+                            onClick={(e) => e.stopPropagation()}
+                            title="View on GitHub"
+                          >
+                            <Github size={15} />
+                          </a>
+                        )}
+                        <a
+                          href={p.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="ps-icon-btn"
+                          onClick={(e) => e.stopPropagation()}
+                          title="View live site"
+                        >
+                          <ArrowUpRight size={15} />
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Bottom content */}
+                    <div className="ps-content">
+                      {/* Live badge */}
+                      <div className="ps-live mb-2">
+                        <span className="ps-live-dot" />
+                        Live
+                      </div>
+
+                      {/* Index */}
+                      <div className="ps-number">Project {String(i + 1).padStart(2, "0")}</div>
+
+                      {/* Title */}
+                      <h3 className="ps-title">{p.title}</h3>
+
+                      {/* Description — reveal on hover */}
+                      <p className="ps-desc">{p.description}</p>
+
+                      {/* Highlights */}
+                      <div className="ps-highlights">
+                        {p.highlights.map((h, j) => (
+                          <span key={j} className="ps-highlight"
+                            style={{ borderColor: `${p.accent}44`, background: `${p.accent}18` }}
+                          >
+                            ✦ {h}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Divider */}
+                      <div className="ps-divider" style={{ background: `${p.accent}44` }} />
+
+                      {/* Tech + CTA row */}
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="ps-techs">
+                          {p.tech.map((t, j) => (
+                            <span key={j} className="ps-tech">{t}</span>
+                          ))}
+                        </div>
+                        <a
+                          href={p.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          style={{
+                            display: "inline-flex", alignItems: "center", gap: 5,
+                            fontSize: "0.65rem", fontWeight: 600,
+                            letterSpacing: "0.08em", textTransform: "uppercase",
+                            color: p.accent, textDecoration: "none",
+                            whiteSpace: "nowrap",
+                            opacity: hovered === i ? 1 : 0,
+                            transform: hovered === i ? "translateX(0)" : "translateX(6px)",
+                            transition: "opacity 0.3s ease, transform 0.3s ease",
+                          }}
+                        >
+                          Visit <ArrowUpRight size={11} />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+
+              {/* End CTA card */}
               <motion.div
-                key={i}
-                custom={i}
+                custom={projects.length}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeUp}
                 className="snap-start shrink-0 w-[88%] sm:w-[70%] md:w-[54%] lg:w-[44%]"
-                onMouseEnter={() => setHovered(i)}
-                onMouseLeave={() => setHovered(null)}
               >
-                <div className="ps-card">
-
-                  {/* Image */}
-                  <img src={p.image} alt={p.title} className="ps-img" />
-
-                  {/* Gradient overlay — two layers: base + accent tint */}
-                  <div
-                    className="ps-overlay"
-                    style={{
-                      background: `linear-gradient(
-                        170deg,
-                        rgba(0,0,0,0.08) 0%,
-                        rgba(0,0,0,0.3) 38%,
-                        rgba(0,0,0,0.82) 72%,
-                        rgba(0,0,0,0.95) 100%
-                      )`,
-                    }}
-                  />
-                  {/* Accent color wash on hover */}
-                  <div
-                    className="ps-overlay"
-                    style={{
-                      background: `radial-gradient(ellipse at 50% 100%, ${p.accent}22 0%, transparent 70%)`,
-                      opacity: hovered === i ? 1 : 0,
-                      transition: "opacity 0.4s ease",
-                    }}
-                  />
-
-                  {/* Top strip */}
-                  <div className="ps-top">
-                    <span className="ps-pill">{p.tag}</span>
-                    <div className="ps-links">
-                      {p.github && (
-                        <a
-                          href={p.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="ps-icon-btn"
-                          onClick={(e) => e.stopPropagation()}
-                          title="View on GitHub"
-                        >
-                          <Github size={15} />
-                        </a>
-                      )}
-                      <a
-                        href={p.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="ps-icon-btn"
-                        onClick={(e) => e.stopPropagation()}
-                        title="View live site"
-                      >
-                        <ArrowUpRight size={15} />
-                      </a>
-                    </div>
+                <div
+                  className="ps-card flex flex-col items-center justify-center text-center gap-4"
+                  style={{
+                    background: "linear-gradient(135deg, #0a1a1a 0%, #001f1e 100%)",
+                    border: "1.5px dashed rgba(0,184,172,0.25)",
+                  }}
+                >
+                  <div style={{
+                    width: 56, height: 56, borderRadius: "50%",
+                    border: "1.5px solid rgba(0,184,172,0.3)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: "#009087",
+                  }}>
+                    <Github size={22} />
                   </div>
-
-                  {/* Bottom content */}
-                  <div className="ps-content">
-                    {/* Live badge */}
-                    <div className="ps-live mb-2">
-                      <span className="ps-live-dot" />
-                      Live
-                    </div>
-
-                    {/* Index */}
-                    <div className="ps-number">Project {String(i + 1).padStart(2, "0")}</div>
-
-                    {/* Title */}
-                    <h3 className="ps-title">{p.title}</h3>
-
-                    {/* Description — reveal on hover */}
-                    <p className="ps-desc">{p.description}</p>
-
-                    {/* Highlights */}
-                    <div className="ps-highlights">
-                      {p.highlights.map((h, j) => (
-                        <span key={j} className="ps-highlight"
-                          style={{ borderColor: `${p.accent}44`, background: `${p.accent}18` }}
-                        >
-                          ✦ {h}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Divider */}
-                    <div className="ps-divider" style={{ background: `${p.accent}44` }} />
-
-                    {/* Tech + CTA row */}
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="ps-techs">
-                        {p.tech.map((t, j) => (
-                          <span key={j} className="ps-tech">{t}</span>
-                        ))}
-                      </div>
-                      <a
-                        href={p.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        style={{
-                          display: "inline-flex", alignItems: "center", gap: 5,
-                          fontSize: "0.65rem", fontWeight: 600,
-                          letterSpacing: "0.08em", textTransform: "uppercase",
-                          color: p.accent, textDecoration: "none",
-                          whiteSpace: "nowrap",
-                          opacity: hovered === i ? 1 : 0,
-                          transform: hovered === i ? "translateX(0)" : "translateX(6px)",
-                          transition: "opacity 0.3s ease, transform 0.3s ease",
-                        }}
-                      >
-                        Visit <ArrowUpRight size={11} />
-                      </a>
-                    </div>
+                  <div>
+                    <p className="ps-serif" style={{ fontSize: "1.3rem", color: "#fff", marginBottom: 8 }}>
+                      More on GitHub
+                    </p>
+                    <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.7, maxWidth: 220 }}>
+                      Explore all my repositories and open-source contributions.
+                    </p>
                   </div>
+                  <a
+                    href="https://github.com/TariqCO"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex", alignItems: "center", gap: 8,
+                      padding: "10px 24px", borderRadius: 99,
+                      background: "rgba(0,184,172,0.12)",
+                      border: "1px solid rgba(0,184,172,0.3)",
+                      color: "#00b8ac", fontSize: "0.72rem",
+                      fontWeight: 600, letterSpacing: "0.1em",
+                      textTransform: "uppercase", textDecoration: "none",
+                      transition: "background 0.2s, border-color 0.2s",
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.background = "rgba(0,184,172,0.2)"; e.currentTarget.style.borderColor = "rgba(0,184,172,0.5)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = "rgba(0,184,172,0.12)"; e.currentTarget.style.borderColor = "rgba(0,184,172,0.3)"; }}
+                  >
+                    View GitHub <ArrowUpRight size={13} />
+                  </a>
                 </div>
               </motion.div>
-            ))}
-
-            {/* End CTA card */}
-            <motion.div
-              custom={projects.length}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              className="snap-start shrink-0 w-[88%] sm:w-[70%] md:w-[54%] lg:w-[44%]"
-            >
-              <div
-                className="ps-card flex flex-col items-center justify-center text-center gap-4"
-                style={{
-                  background: "linear-gradient(135deg, #0a1a1a 0%, #001f1e 100%)",
-                  border: "1.5px dashed rgba(0,184,172,0.25)",
-                }}
-              >
-                <div style={{
-                  width: 56, height: 56, borderRadius: "50%",
-                  border: "1.5px solid rgba(0,184,172,0.3)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  color: "#009087",
-                }}>
-                  <Github size={22} />
-                </div>
-                <div>
-                  <p className="ps-serif" style={{ fontSize: "1.3rem", color: "#fff", marginBottom: 8 }}>
-                    More on GitHub
-                  </p>
-                  <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.7, maxWidth: 220 }}>
-                    Explore all my repositories and open-source contributions.
-                  </p>
-                </div>
-                <a
-                  href="https://github.com/TariqCO"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: "inline-flex", alignItems: "center", gap: 8,
-                    padding: "10px 24px", borderRadius: 99,
-                    background: "rgba(0,184,172,0.12)",
-                    border: "1px solid rgba(0,184,172,0.3)",
-                    color: "#00b8ac", fontSize: "0.72rem",
-                    fontWeight: 600, letterSpacing: "0.1em",
-                    textTransform: "uppercase", textDecoration: "none",
-                    transition: "background 0.2s, border-color 0.2s",
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(0,184,172,0.2)"; e.currentTarget.style.borderColor = "rgba(0,184,172,0.5)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "rgba(0,184,172,0.12)"; e.currentTarget.style.borderColor = "rgba(0,184,172,0.3)"; }}
-                >
-                  View GitHub <ArrowUpRight size={13} />
-                </a>
-              </div>
-            </motion.div>
-          </div>
+            </div>
+          )}
 
           {/* ── Dot indicators ── */}
-          <div className="flex justify-center gap-2 mt-8">
-            {projects.map((_, i) => (
-              <div
-                key={i}
-                style={{
-                  width: 6, height: 6, borderRadius: "50%",
-                  background: hovered === i ? "#009087" : "#d1d5db",
-                  transition: "background 0.3s, transform 0.3s",
-                  transform: hovered === i ? "scale(1.4)" : "scale(1)",
-                }}
-              />
-            ))}
-          </div>
+          {projects.length > 0 && (
+            <div className="flex justify-center gap-2 mt-8">
+              {projects.map((_, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: 6, height: 6, borderRadius: "50%",
+                    background: hovered === i ? "#009087" : "#d1d5db",
+                    transition: "background 0.3s, transform 0.3s",
+                    transform: hovered === i ? "scale(1.4)" : "scale(1)",
+                  }}
+                />
+              ))}
+            </div>
+          )}
 
         </div>
       </section>
