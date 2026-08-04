@@ -471,7 +471,7 @@ const About = () => {
                   Back to Home
                 </Link>
                 <a
-                  href="files/MyResume.pdf"
+                  href="images/MyResume.pdf"
                   download
                   className="btn-secondary-about"
                 >
