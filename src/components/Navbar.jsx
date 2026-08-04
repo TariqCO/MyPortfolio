@@ -47,90 +47,115 @@ const Navbar = () => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
-        .navbar-wrap { font-family: 'DM Sans', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        .navbar-wrap {
+          --paper: #FAFAF9; --surface: #FFFFFF; --ink: #14161A;
+          --ink-2: #6B7178; --ink-3: #9BA0A6; --line: #E4E4E1;
+          --blue: #2F6FED; --blue-soft: rgba(47,111,237,0.07);
+          font-family: 'Inter', sans-serif;
+        }
+        .nb-mono { font-family: 'JetBrains Mono', monospace; }
+        .nb-display { font-family: 'Space Grotesk', sans-serif; }
 
         .nav-pill {
           align-items: center;
-          gap: 2px;
-          background: rgba(255,255,255,0.92);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          border-radius: 99px;
-          padding: 6px 8px;
-          border: 1px solid rgba(0,0,0,0.07);
-          transition: box-shadow 0.3s ease, border-color 0.3s ease;
+          gap: 3px;
+          background: var(--surface);
+          border-radius: 8px;
+          padding: 5px;
+          border: 1px solid var(--line);
+          transition: box-shadow 0.2s ease, border-color 0.2s ease;
           white-space: nowrap;
         }
         .nav-pill.scrolled {
-          box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-          border-color: rgba(0,144,135,0.12);
+          box-shadow: 0 6px 20px rgba(20,22,26,0.08);
         }
+
+        .nav-logo {
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: 0.85rem; font-weight: 600;
+          color: var(--ink);
+          text-decoration: none;
+          padding: 7px 14px 7px 10px;
+          margin-right: 3px;
+          border-right: 1px solid var(--line);
+          display: flex; align-items: center; gap: 6px;
+        }
+        @keyframes navPulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(22,163,74,0.35); }
+          50%      { box-shadow: 0 0 0 4px rgba(22,163,74,0); }
+        }
+        .nav-status-dot {
+          width: 6px; height: 6px; border-radius: 50%;
+          background: #16A34A;
+          animation: navPulse 2.2s ease-in-out infinite;
+        }
+
         .nav-link {
           position: relative;
-          font-size: 0.875rem; font-weight: 500;
-          color: #6b7280; padding: 7px 16px;
-          border-radius: 99px; text-decoration: none;
-          transition: color 0.2s ease; white-space: nowrap;
+          font-size: 0.78rem; font-weight: 500;
+          font-family: 'JetBrains Mono', monospace;
+          color: var(--ink-2); padding: 7px 14px;
+          border-radius: 5px; text-decoration: none;
+          transition: color 0.15s ease; white-space: nowrap;
         }
-        .nav-link:hover { color: #111; }
-        .nav-link.active-link { color: #fff; }
+        .nav-link:hover { color: var(--ink); }
+        .nav-link.active-link { color: var(--paper); }
         .nav-active-bg {
           position: absolute; inset: 0;
-          border-radius: 99px; background: #009087; z-index: -1;
+          border-radius: 5px; background: var(--ink); z-index: -1;
         }
-        .logo-dot {
-          width: 8px; height: 8px; border-radius: 50%;
-          background: #009087; display: inline-block;
-          margin-left: 3px; margin-bottom: 1px; vertical-align: middle;
-        }
+
         .mobile-trigger {
-          align-items: center; gap: 10px;
-          background: rgba(255,255,255,0.95);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          border: 1px solid rgba(0,0,0,0.08);
-          border-radius: 99px; padding: 10px 18px;
+          align-items: center; gap: 9px;
+          background: var(--surface);
+          border: 1px solid var(--line);
+          border-radius: 8px; padding: 9px 16px;
           cursor: pointer;
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.875rem; font-weight: 500; color: #374151;
-          transition: box-shadow 0.2s ease, border-color 0.2s ease;
-          box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.78rem; font-weight: 500; color: var(--ink);
+          transition: border-color 0.15s ease;
         }
-        .mobile-trigger:hover {
-          border-color: rgba(0,144,135,0.25);
-          box-shadow: 0 6px 22px rgba(0,144,135,0.15);
-        }
+        .mobile-trigger:hover { border-color: var(--ink); }
+
         .mobile-menu {
-          margin-top: 10px;
-          background: rgba(255,255,255,0.98);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(0,0,0,0.07);
-          border-radius: 20px; padding: 10px;
-          box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+          margin-top: 8px;
+          background: var(--surface);
+          border: 1px solid var(--line);
+          border-radius: 10px; padding: 8px;
+          box-shadow: 0 10px 32px rgba(20,22,26,0.1);
           width: 220px; overflow: hidden;
         }
         .mobile-link {
           display: flex; align-items: center; justify-content: space-between;
-          padding: 11px 16px; border-radius: 12px;
-          font-size: 0.875rem; font-weight: 500;
-          color: #374151; text-decoration: none;
-          transition: background 0.18s ease, color 0.18s ease;
+          padding: 10px 14px; border-radius: 6px;
+          font-size: 0.82rem; font-weight: 500;
+          font-family: 'JetBrains Mono', monospace;
+          color: var(--ink-2); text-decoration: none;
+          transition: background 0.15s ease, color 0.15s ease;
         }
-        .mobile-link:hover { background: #f9fafb; color: #111; }
+        .mobile-link:hover { background: var(--paper); color: var(--ink); }
         .mobile-link.mobile-active {
-          background: rgba(0,144,135,0.08); color: #009087;
+          background: var(--blue-soft); color: var(--blue);
         }
         .mobile-active-dot {
-          width: 6px; height: 6px; border-radius: 50%;
-          background: #009087; flex-shrink: 0;
+          width: 5px; height: 5px; border-radius: 50%;
+          background: var(--blue); flex-shrink: 0;
         }
-        .mobile-divider { height: 1px; background: #f3f4f6; margin: 6px 0; }
+        .mobile-divider { height: 1px; background: var(--line); margin: 6px 0; }
         .menu-label {
-          display: block; font-size: 0.65rem; font-weight: 600;
-          text-transform: uppercase; letter-spacing: 0.09em;
-          color: #9ca3af; padding: 6px 16px 4px;
+          display: block; font-size: 0.64rem; font-weight: 600;
+          font-family: 'JetBrains Mono', monospace;
+          text-transform: uppercase; letter-spacing: 0.08em;
+          color: var(--ink-3); padding: 6px 14px 5px;
+        }
+        .cv-badge {
+          font-size: 0.62rem; font-weight: 700;
+          font-family: 'JetBrains Mono', monospace;
+          background: var(--blue-soft); color: var(--blue);
+          border-radius: 3px; padding: 2px 6px;
+          letter-spacing: 0.04em;
         }
       `}</style>
 
@@ -145,24 +170,9 @@ const Navbar = () => {
         }}
       >
         <div className={`nav-pill flex ${scrolled ? "scrolled" : ""}`}>
-          <a
-            href="#hero"
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "0.875rem",
-              fontWeight: 600,
-              color: "#111",
-              textDecoration: "none",
-              padding: "7px 14px 7px 10px",
-              marginRight: "4px",
-              borderRight: "1px solid #f0f0f0",
-              display: "flex",
-              alignItems: "center",
-              gap: 2,
-            }}
-          >
+          <a href="#hero" className="nav-logo">
             Tariq
-            <span className="logo-dot" />
+            <span className="nav-status-dot" />
           </a>
 
           {sections.map((section) => {
@@ -180,7 +190,7 @@ const Navbar = () => {
                     transition={{ type: "spring", stiffness: 380, damping: 32 }}
                   />
                 )}
-                {section}
+                /{section.toLowerCase()}
               </a>
             );
           })}
@@ -211,22 +221,22 @@ const Navbar = () => {
                 transition={{ duration: 0.18 }}
                 style={{ display: "flex", alignItems: "center" }}
               >
-                {menuOpen ? <FiX size={18} /> : <FiMenu size={18} />}
+                {menuOpen ? <FiX size={16} /> : <FiMenu size={16} />}
               </motion.span>
             </AnimatePresence>
-
+            menu
           </button>
 
           <AnimatePresence>
             {menuOpen && (
               <motion.div
-                initial={{ opacity: 0, y: -12, scale: 0.97 }}
+                initial={{ opacity: 0, y: -10, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -12, scale: 0.97 }}
-                transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                exit={{ opacity: 0, y: -10, scale: 0.98 }}
+                transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
                 className="mobile-menu"
               >
-                <span className="menu-label">Navigation</span>
+                <span className="menu-label">routes</span>
                 <div className="mobile-divider" />
 
                 {sections.map((section, i) => {
@@ -237,11 +247,11 @@ const Navbar = () => {
                       href={`#${section.toLowerCase()}`}
                       className={`mobile-link ${isActive ? "mobile-active" : ""}`}
                       onClick={() => setMenuOpen(false)}
-                      initial={{ opacity: 0, x: -10 }}
+                      initial={{ opacity: 0, x: -8 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
+                      transition={{ delay: i * 0.04 }}
                     >
-                      {section}
+                      /{section.toLowerCase()}
                       {isActive && <span className="mobile-active-dot" />}
                     </motion.a>
                   );
@@ -253,23 +263,10 @@ const Navbar = () => {
                   download
                   className="mobile-link"
                   onClick={() => setMenuOpen(false)}
-                  style={{ color: "#009087", fontWeight: 600 }}
+                  style={{ color: "var(--blue)", fontWeight: 600 }}
                 >
-                  Download CV
-                  <span
-                    style={{
-                      fontSize: "0.65rem",
-                      fontWeight: 700,
-                      background: "rgba(0,144,135,0.1)",
-                      color: "#009087",
-                      borderRadius: 99,
-                      padding: "2px 8px",
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    PDF
-                  </span>
+                  /resume
+                  <span className="cv-badge">PDF</span>
                 </a>
               </motion.div>
             )}

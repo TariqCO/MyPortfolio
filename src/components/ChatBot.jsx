@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import Button from "../personelComp/Button";
-import { SendHorizontal } from "lucide-react";
+import { SendHorizontal, Terminal, X } from "lucide-react";
 
 /* -------------------- GROQ CONFIG -------------------- */
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
@@ -217,17 +216,10 @@ const extractSections = (text) =>
 
 /* -------------------- SECTION BUTTON -------------------- */
 const SectionButton = ({ label, href, onClick }) => (
-  <motion.a
-    href={href}
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-    onClick={onClick}
-    className="px-3 py-1 rounded-full text-xs text-white border border-[#333]
-               bg-gradient-to-br from-[#1f1f1f] to-[#0f0f0f]
-               inline-flex items-center gap-1"
-  >
-    {label} <span className="opacity-60">→</span>
-  </motion.a>
+  <a href={href} onClick={onClick} className="cb-route">
+    <span className="cb-badge">GET</span>
+    {label}
+  </a>
 );
 
 /* -------------------- MAIN COMPONENT -------------------- */
@@ -305,68 +297,252 @@ export default function ChatBot() {
 
   return (
     <>
-      {/* CHAT BOX WRAPPER */}
-      <div
-        className="fixed bottom-8 left-1/2 -translate-x-1/2
-                  sm:left-8 sm:translate-x-0 z-50
-                  w-[95vw] sm:w-auto"
-      >
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        .cb-root {
+          --paper: #FAFAF9; --surface: #FFFFFF; --ink: #14161A;
+          --ink-2: #6B7178; --ink-3: #9BA0A6; --line: #E4E4E1;
+          --blue: #2F6FED; --blue-soft: rgba(47,111,237,0.07);
+          --green: #16A34A; --green-soft: rgba(22,163,74,0.08);
+          font-family: 'Inter', sans-serif;
+          color: var(--ink);
+        }
+        .cb-mono { font-family: 'JetBrains Mono', monospace; }
+        .cb-display { font-family: 'Space Grotesk', sans-serif; }
+
+        .cb-panel {
+          background: var(--surface);
+          border: 1px solid var(--line);
+          border-radius: 10px;
+          box-shadow: 0 8px 28px rgba(20,22,26,0.12);
+          overflow: hidden;
+        }
+
+        .cb-head {
+          display: flex; align-items: center; justify-content: space-between;
+          padding: 12px 16px;
+          border-bottom: 1px solid var(--line);
+          background: #FCFCFB;
+        }
+        .cb-head-left { display: flex; align-items: center; gap: 9px; }
+        .cb-head-icon {
+          width: 26px; height: 26px; border-radius: 5px;
+          background: var(--ink); color: var(--paper);
+          display: flex; align-items: center; justify-content: center;
+          flex-shrink: 0;
+        }
+        .cb-head-title { font-size: 0.82rem; font-weight: 600; line-height: 1.2; }
+        .cb-head-status {
+          font-size: 0.68rem; color: var(--ink-3);
+          display: flex; align-items: center; gap: 5px;
+          margin-top: 1px;
+        }
+        @keyframes cbPulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(22,163,74,0.35); }
+          50%      { box-shadow: 0 0 0 4px rgba(22,163,74,0); }
+        }
+        .cb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: cbPulse 2s ease-in-out infinite; flex-shrink: 0; }
+        .cb-dot.busy { background: var(--blue); }
+
+        .cb-close {
+          width: 26px; height: 26px; border-radius: 5px;
+          border: 1px solid var(--line); background: var(--surface);
+          display: flex; align-items: center; justify-content: center;
+          color: var(--ink-2);
+          transition: border-color 0.15s ease, color 0.15s ease;
+        }
+        .cb-close:hover { border-color: var(--ink); color: var(--ink); }
+
+        .cb-messages {
+          background: var(--paper);
+        }
+
+        .cb-bubble {
+          font-size: 0.85rem; line-height: 1.55;
+          padding: 10px 13px;
+          border-radius: 6px;
+          max-width: 82%;
+        }
+        .cb-bubble.user {
+          align-self: flex-end;
+          background: var(--ink);
+          color: var(--paper);
+        }
+        .cb-bubble.ai {
+          align-self: flex-start;
+          background: var(--surface);
+          border: 1px solid var(--line);
+          color: var(--ink);
+        }
+        .cb-role-tag {
+          font-size: 0.62rem; font-weight: 600;
+          text-transform: uppercase; letter-spacing: 0.05em;
+          margin-bottom: 4px; display: block;
+        }
+        .cb-bubble.user .cb-role-tag { color: rgba(250,250,249,0.55); }
+        .cb-bubble.ai .cb-role-tag { color: var(--blue); }
+
+        .cb-route {
+          display: inline-flex; align-items: center; gap: 6px;
+          padding: 4px 10px;
+          border: 1px solid var(--line);
+          border-radius: 5px;
+          background: var(--surface);
+          text-decoration: none;
+          color: var(--ink-2);
+          font-size: 0.68rem;
+          font-family: 'JetBrains Mono', monospace;
+          transition: border-color 0.15s ease, color 0.15s ease;
+        }
+        .cb-route:hover { border-color: var(--ink); color: var(--ink); }
+        .cb-badge {
+          font-size: 0.6rem; font-weight: 600;
+          padding: 1px 5px; border-radius: 3px;
+          background: var(--blue-soft); color: var(--blue);
+        }
+
+        .cb-typing {
+          align-self: flex-start;
+          display: flex; align-items: center; gap: 5px;
+          font-size: 0.72rem; color: var(--ink-3);
+          font-family: 'JetBrains Mono', monospace;
+          padding: 10px 13px;
+          border: 1px solid var(--line);
+          border-radius: 6px;
+          background: var(--surface);
+        }
+        @keyframes cbBlink { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+        .cb-typing-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-3); animation: cbBlink 1s ease-in-out infinite; }
+        .cb-typing-dot:nth-child(2) { animation-delay: 0.15s; }
+        .cb-typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+        .cb-inputbar {
+          display: flex; align-items: center; gap: 8px;
+          padding: 12px;
+          border-top: 1px solid var(--line);
+          background: var(--surface);
+        }
+        .cb-input {
+          flex: 1;
+          background: var(--paper);
+          border: 1px solid var(--line);
+          border-radius: 6px;
+          padding: 10px 12px;
+          font-size: 0.84rem;
+          color: var(--ink);
+          outline: none;
+          font-family: 'Inter', sans-serif;
+          transition: border-color 0.15s ease;
+        }
+        .cb-input::placeholder { color: var(--ink-3); }
+        .cb-input:focus { border-color: var(--ink); }
+
+        .cb-send {
+          width: 38px; height: 38px; flex-shrink: 0;
+          border-radius: 6px;
+          background: var(--ink); color: var(--paper);
+          border: none; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          transition: background 0.15s ease;
+        }
+        .cb-send:hover { background: var(--blue); }
+        .cb-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .cb-toggle {
+          display: flex; align-items: center; gap: 9px;
+          padding: 10px 16px 10px 10px;
+          background: var(--ink); color: var(--paper);
+          border: none; border-radius: 8px;
+          cursor: pointer;
+          box-shadow: 0 6px 20px rgba(20,22,26,0.22);
+          transition: transform 0.15s ease, background 0.15s ease;
+        }
+        .cb-toggle:hover { transform: translateY(-2px); background: var(--blue); }
+        .cb-toggle-icon {
+          width: 26px; height: 26px; border-radius: 5px;
+          background: rgba(255,255,255,0.12);
+          display: flex; align-items: center; justify-content: center;
+        }
+        .cb-toggle-label {
+          font-size: 0.8rem; font-weight: 500;
+          display: flex; flex-direction: column; align-items: flex-start;
+          line-height: 1.2;
+        }
+        .cb-toggle-status {
+          font-size: 0.64rem;
+          font-family: 'JetBrains Mono', monospace;
+          color: rgba(250,250,249,0.55);
+          display: flex; align-items: center; gap: 5px;
+        }
+
+        .cb-scroll::-webkit-scrollbar { width: 4px; }
+        .cb-scroll::-webkit-scrollbar-thumb { background: var(--line); border-radius: 99px; }
+      `}</style>
+
+      {/* CHAT PANEL */}
+      <div className="cb-root fixed bottom-8 left-1/2 -translate-x-1/2 sm:left-8 sm:translate-x-0 z-50 w-[95vw] sm:w-auto">
         <AnimatePresence>
           {chatBoxOpen && (
             <motion.div
               ref={chatRef}
-              initial={{ opacity: 0, scale: 0.9, y: 40 }}
+              initial={{ opacity: 0, scale: 0.96, y: 24 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 40 }}
-              transition={{ duration: 0.25 }}
-              className="w-full sm:w-[340px] h-[70vh] sm:h-[480px]
-                     flex flex-col rounded-2xl
-                     bg-[#1a1a1ad9] backdrop-blur-xl
-                     border border-[#2f2f2f]
-                     shadow-2xl overflow-hidden"
+              exit={{ opacity: 0, scale: 0.96, y: 24 }}
+              transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+              className="cb-panel w-full sm:w-[360px] h-[72vh] sm:h-[500px] flex flex-col"
             >
               {/* Header */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-[#2f2f2f] text-white">
-                <div>
-                  <h2 className="text-sm font-semibold">AI Assistant</h2>
-                  <p className="text-xs text-gray-400">
-                    {loading ? "Typing..." : "Online"}
-                  </p>
+              <div className="cb-head">
+                <div className="cb-head-left">
+                  <div className="cb-head-icon">
+                    <Terminal size={14} />
+                  </div>
+                  <div>
+                    <div className="cb-head-title cb-display">AI assistant</div>
+                    <div className="cb-head-status">
+                      <span className={`cb-dot ${loading ? "busy" : ""}`} />
+                      {loading ? "generating response" : "GET /assistant · 200 OK"}
+                    </div>
+                  </div>
                 </div>
-                <button
-                  onClick={() => setChatBoxOpen(false)}
-                  className="text-gray-400 hover:text-white text-sm"
-                >
-                  ✕
+                <button onClick={() => setChatBoxOpen(false)} className="cb-close" aria-label="Close chat">
+                  <X size={13} />
                 </button>
               </div>
 
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-3 space-y-2 overscroll-contain">
+              <div className="cb-messages cb-scroll flex-1 overflow-y-auto p-3 flex flex-col gap-2.5">
+                {chatHistory.length === 0 && !loading && (
+                  <div className="cb-mono text-[0.72rem] text-[var(--ink-3)] text-center py-6 px-4 leading-relaxed">
+                    Ask anything about Tariq's stack, projects, or experience —
+                    answered straight from his profile.
+                  </div>
+                )}
+
                 {chatHistory.map((chat, i) => {
                   const sections = extractSections(chat.message);
-
                   return (
                     <motion.div
                       key={i}
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className={`max-w-[80%] px-3 py-2 rounded-xl text-sm text-white
-                    ${
-                      chat.chat === "user"
-                        ? "self-start bg-gradient-to-br from-[#00a99d] to-[#008a7a]"
-                        : "self-end bg-[#2a2a2a]"
-                    }`}
+                      transition={{ duration: 0.18 }}
+                      className={`flex flex-col ${chat.chat === "user" ? "items-end" : "items-start"}`}
                     >
-                      <p>{chat.message}</p>
+                      <div className={`cb-bubble ${chat.chat === "user" ? "user" : "ai"}`}>
+                        <span className="cb-role-tag cb-mono">
+                          {chat.chat === "user" ? "you" : "assistant"}
+                        </span>
+                        <p className="whitespace-pre-wrap">{chat.message}</p>
+                      </div>
 
                       {chat.chat === "ai" && sections.length > 0 && (
                         <div className="flex gap-2 flex-wrap mt-2">
                           {sections.map((sec) => (
                             <SectionButton
                               key={sec}
-                              label={`Go to ${sec}`}
+                              label={`/${sec}`}
                               href={sectionMaps[sec]}
                               onClick={() => setChatBoxOpen(false)}
                             />
@@ -378,33 +554,26 @@ export default function ChatBot() {
                 })}
 
                 {loading && (
-                  <div className="self-end bg-[#2a2a2a] text-white px-3 py-2 rounded-xl text-sm">
-                    AI is thinking…
+                  <div className="cb-typing">
+                    <span className="cb-typing-dot" />
+                    <span className="cb-typing-dot" />
+                    <span className="cb-typing-dot" />
                   </div>
                 )}
                 <div ref={endRef} />
               </div>
 
               {/* Input */}
-              <form
-                onSubmit={handleSubmit}
-                className="flex items-center gap-2 p-3 border-t border-[#2f2f2f]"
-              >
+              <form onSubmit={handleSubmit} className="cb-inputbar">
                 <input
                   type="text"
                   placeholder="Ask something about Tariq..."
-                  className="flex-1 bg-[#262626] text-white text-base sm:text-sm
-                         rounded-xl px-4 py-3 sm:py-2 outline-none
-                         focus:ring-1 focus:ring-[#00a99d]"
+                  className="cb-input"
                   value={user}
                   onChange={(e) => setUser(e.target.value)}
                 />
-                <button
-                  type="submit"
-                  className="bg-gradient-to-br from-[#00a99d] to-[#008a7a]
-                         p-3 sm:p-2 rounded-xl text-white hover:opacity-90"
-                >
-                  <SendHorizontal size={18} />
+                <button type="submit" className="cb-send" disabled={!user.trim() || loading} aria-label="Send message">
+                  <SendHorizontal size={16} />
                 </button>
               </form>
             </motion.div>
@@ -412,12 +581,20 @@ export default function ChatBot() {
         </AnimatePresence>
       </div>
 
-      {/* BUTTON WRAPPER */}
+      {/* TOGGLE BUTTON */}
       {!chatBoxOpen && (
-        <div className="fixed bottom-8 left-8 sm:bottom-8 sm:left-8 z-50">
-          <div onClick={() => setChatBoxOpen(true)}>
-            <Button />
-          </div>
+        <div className="cb-root fixed bottom-8 left-8 z-50">
+          <button onClick={() => setChatBoxOpen(true)} className="cb-toggle">
+            <span className="cb-toggle-icon">
+              <Terminal size={14} />
+            </span>
+            <span className="cb-toggle-label">
+              Ask AI
+              <span className="cb-toggle-status">
+                <span className="cb-dot" /> online
+              </span>
+            </span>
+          </button>
         </div>
       )}
     </>

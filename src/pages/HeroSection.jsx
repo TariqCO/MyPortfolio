@@ -1,255 +1,285 @@
-import React, { useEffect, useRef } from "react";
-import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
+import React, { useEffect, useState } from "react";
+import { FiGithub, FiLinkedin, FiMail, FiArrowUpRight } from "react-icons/fi";
+
+const payload = [
+  { k: "name", v: '"Tariq Rasheed"' },
+  { k: "role", v: '"Full-Stack Developer"' },
+  { k: "currently", v: '"Backend AI Engineer Intern @ FlyRank AI"' },
+  { k: "stack", v: '["MERN", "Python", "LLM Integration"]' },
+  { k: "location", v: '"Karachi, PK"' },
+  { k: "status", v: '"available_for_hire"' },
+];
+
+const routes = [
+  { method: "GET", path: "/about" },
+  { method: "GET", path: "/skills" },
+  { method: "GET", path: "/experience" },
+  { method: "GET", path: "/projects" },
+  { method: "POST", path: "/contact" },
+];
 
 const HeroSection = () => {
-  const cursorRef = useRef(null);
+  const [lines, setLines] = useState([]);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate(${e.clientX - 160}px, ${e.clientY - 160}px)`;
+    let cancelled = false;
+    let timeoutId;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setLines(payload);
+      setDone(true);
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    setLines([]);
+    setDone(false);
+
+    let i = 0;
+    const step = () => {
+      if (cancelled) return;
+      if (i >= payload.length) {
+        setDone(true);
+        return;
       }
+      const next = payload[i];
+      setLines((prev) => [...prev, next]);
+      i += 1;
+      timeoutId = setTimeout(step, 220);
     };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    timeoutId = setTimeout(step, 400);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(28px); }
-          to   { opacity: 1; transform: translateY(0); }
+        .hs-root {
+          --paper: #FAFAF9;
+          --surface: #FFFFFF;
+          --ink: #14161A;
+          --ink-2: #6B7178;
+          --ink-3: #9BA0A6;
+          --line: #E4E4E1;
+          --blue: #2F6FED;
+          --blue-soft: rgba(47,111,237,0.07);
+          --green: #16A34A;
+          --green-soft: rgba(22,163,74,0.08);
+          font-family: 'Inter', sans-serif;
+          background: var(--paper);
+          color: var(--ink);
         }
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to   { opacity: 1; }
-        }
-        @keyframes floatOrb {
-          0%, 100% { transform: translateY(0px) scale(1); }
-          50%       { transform: translateY(-18px) scale(1.04); }
-        }
-        @keyframes softPulse {
-          0%, 100% { opacity: 0.18; }
-          50%       { opacity: 0.28; }
-        }
-        @keyframes cursorMove {
-          to { opacity: 1; }
-        }
-        @keyframes badgePop {
-          from { opacity: 0; transform: scale(0.85) translateY(6px); }
-          to   { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        @keyframes shimmer {
-          0%   { background-position: -200% center; }
-          100% { background-position: 200% center; }
-        }
-        @keyframes iconFloat {
-          0%, 100% { transform: translateY(0); }
-          50%       { transform: translateY(-4px); }
+        .hs-mono { font-family: 'JetBrains Mono', monospace; }
+        .hs-display { font-family: 'Space Grotesk', sans-serif; }
+
+        .hs-grain {
+          background-image: radial-gradient(var(--line) 1px, transparent 1px);
+          background-size: 22px 22px;
         }
 
-        .hero-section { font-family: 'DM Sans', sans-serif; }
-
-        .hero-heading {
-          font-family: 'Instrument Serif', serif;
-          animation: fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.1s both;
-        }
-        .hero-sub {
-          animation: fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.25s both;
-        }
-        .hero-desc {
-          animation: fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.4s both;
-        }
-        .hero-buttons {
-          animation: fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.55s both;
-        }
-        .hero-icons {
-          animation: fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.7s both;
-        }
-        .hero-badge {
-          animation: badgePop 0.6s cubic-bezier(.34,1.56,.64,1) 0.9s both;
-        }
-
-        .orb-1 {
-          animation: floatOrb 7s ease-in-out infinite, softPulse 7s ease-in-out infinite;
-        }
-        .orb-2 {
-          animation: floatOrb 9s ease-in-out 1.5s infinite, softPulse 9s ease-in-out 1s infinite;
-        }
-        .orb-3 {
-          animation: floatOrb 11s ease-in-out 3s infinite;
-        }
-
-        .cursor-glow {
-          pointer-events: none;
-          position: fixed;
-          top: 0; left: 0;
-          width: 320px; height: 320px;
-          border-radius: 50%;
-          background: radial-gradient(circle, rgba(0,144,135,0.10) 0%, transparent 70%);
-          transition: transform 0.18s ease;
-          z-index: 0;
-        }
-
-        .btn-primary {
-          position: relative;
-          overflow: hidden;
-          transition: transform 0.18s ease, box-shadow 0.18s ease;
-        }
-        .btn-primary::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%);
-          background-size: 200% 100%;
-          opacity: 0;
-          transition: opacity 0.3s;
-        }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
-        .btn-primary:hover::after { opacity: 1; animation: shimmer 0.6s linear; }
-        .btn-primary:active { transform: translateY(0); }
-
-        .btn-secondary {
-          transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-        }
-        .btn-secondary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-          background: #f9fafb;
-        }
-        .btn-secondary:active { transform: translateY(0); }
-
-        .social-icon {
-          transition: color 0.2s, transform 0.2s;
-        }
-        .social-icon:hover {
-          color: #009087;
-          animation: iconFloat 0.6s ease;
-        }
-
-        .teal-name {
-          background: linear-gradient(135deg, #009087 0%, #00b8ac 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        .divider-dot {
+        @keyframes hsBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .hs-cursor {
           display: inline-block;
-          width: 4px; height: 4px;
-          border-radius: 50%;
-          background: #d1d5db;
-          margin: 0 10px;
+          width: 7px; height: 15px;
+          background: var(--blue);
+          margin-left: 4px;
+          animation: hsBlink 1s step-end infinite;
           vertical-align: middle;
         }
 
-        .status-dot {
-          width: 7px; height: 7px;
-          border-radius: 50%;
-          background: #009087;
-          display: inline-block;
-          animation: softPulse 2s ease-in-out infinite;
-          box-shadow: 0 0 0 2px rgba(0,144,135,0.2);
+        @keyframes hsFade {
+          from { opacity: 0; transform: translateY(6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .hs-json-line { animation: hsFade 0.35s ease both; }
+
+        @keyframes hsPulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(22,163,74,0.35); }
+          50%      { box-shadow: 0 0 0 5px rgba(22,163,74,0); }
+        }
+        .hs-status-dot {
+          width: 7px; height: 7px; border-radius: 50%;
+          background: var(--green);
+          animation: hsPulse 2s ease-in-out infinite;
         }
 
-        .grid-bg {
-          background-image:
-            linear-gradient(rgba(0,144,135,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,144,135,0.04) 1px, transparent 1px);
-          background-size: 40px 40px;
+        .hs-badge {
+          font-size: 0.68rem;
+          font-weight: 600;
+          padding: 2px 7px;
+          border-radius: 3px;
+          letter-spacing: 0.03em;
         }
+        .hs-badge.get { background: var(--blue-soft); color: var(--blue); }
+        .hs-badge.post { background: var(--green-soft); color: var(--green); }
+
+        .hs-route {
+          display: inline-flex; align-items: center; gap: 8px;
+          padding: 6px 12px;
+          border: 1px solid var(--line);
+          border-radius: 5px;
+          background: var(--surface);
+          text-decoration: none;
+          color: var(--ink-2);
+          font-size: 0.76rem;
+          transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+        }
+        .hs-route:hover {
+          border-color: var(--ink);
+          color: var(--ink);
+          transform: translateY(-1px);
+        }
+
+        .hs-json-panel {
+          background: var(--surface);
+          border: 1px solid var(--line);
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 1px 2px rgba(20,22,26,0.04);
+        }
+        .hs-json-topbar {
+          display: flex; align-items: center; justify-content: space-between;
+          padding: 10px 16px;
+          border-bottom: 1px solid var(--line);
+          background: #FCFCFB;
+        }
+        .hs-dot-row { display: flex; gap: 6px; }
+        .hs-dot { width: 8px; height: 8px; border-radius: 50%; background: #E4E4E1; }
+
+        .hs-btn-primary {
+          display: inline-flex; align-items: center; gap: 6px;
+          padding: 10px 18px;
+          background: var(--ink);
+          color: var(--paper);
+          border-radius: 5px;
+          font-size: 0.85rem; font-weight: 500;
+          transition: transform 0.15s ease, background 0.15s ease;
+        }
+        .hs-btn-primary:hover { background: var(--blue); transform: translateY(-1px); }
+
+        .hs-btn-secondary {
+          display: inline-flex; align-items: center; gap: 6px;
+          padding: 10px 18px;
+          background: transparent;
+          border: 1px solid var(--line);
+          color: var(--ink);
+          border-radius: 5px;
+          font-size: 0.85rem; font-weight: 500;
+          transition: transform 0.15s ease, border-color 0.15s ease;
+        }
+        .hs-btn-secondary:hover { border-color: var(--ink); transform: translateY(-1px); }
+
+        .hs-social {
+          width: 36px; height: 36px;
+          border: 1px solid var(--line);
+          border-radius: 5px;
+          display: flex; align-items: center; justify-content: center;
+          color: var(--ink-2);
+          transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+        }
+        .hs-social:hover { border-color: var(--ink); color: var(--ink); background: var(--surface); }
       `}</style>
 
       <section
         id="hero"
-        className="hero-section relative flex flex-col justify-center items-center min-h-screen w-full overflow-hidden bg-gray-50 grid-bg"
+        className="hs-root hs-grain relative w-full min-h-screen flex flex-col justify-center px-6 py-28"
       >
-        {/* Cursor glow */}
-        <div ref={cursorRef} className="cursor-glow" />
+        <div className="max-w-5xl w-full mx-auto">
 
-        {/* Orbs */}
-        <div className="orb-1 absolute top-[10%] left-[8%] w-72 h-72 rounded-full bg-[#009087]/10 blur-3xl z-0" />
-        <div className="orb-2 absolute bottom-[12%] right-[6%] w-80 h-80 rounded-full bg-[#009087]/08 blur-3xl z-0" />
-        <div className="orb-3 absolute top-[55%] left-[50%] w-48 h-48 rounded-full bg-gray-300/30 blur-2xl z-0 -translate-x-1/2" />
-
-        {/* Content */}
-        <div className="relative z-10 text-center max-w-2xl px-6 pt-8 pb-16">
-          {/* Availability badge */}
-          <div className="hero-badge inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full bg-white border border-gray-200 shadow-sm text-xs font-medium text-gray-500">
-            <span className="status-dot" />
-            Available for opportunities
+          {/* Top strip: monogram + server status */}
+          <div className="flex items-center justify-between mb-14">
+            <div className="hs-mono text-xs text-[var(--ink-2)] flex items-center gap-2">
+              <span className="hs-status-dot" />
+              server: online
+            </div>
+            <div className="hs-mono text-xs text-[var(--ink-3)]">
+              portfolio-api <span className="text-[var(--ink)]">v1.0</span>
+            </div>
           </div>
 
-          {/* Main heading */}
-          <h1 className="hero-heading text-5xl md:text-6xl font-normal text-gray-900 leading-tight">
-            Hey there! I'm <span className="teal-name italic">Tariq</span>
-          </h1>
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-12 items-start">
 
-          {/* Subheading */}
-          <div className="hero-sub flex items-center justify-center gap-1 mt-4 text-sm text-gray-400 font-medium tracking-wide uppercase">
-            <span>Full-Stack Developer</span>
-            <span className="divider-dot" />
-            <span>MERN Stack</span>
-            <span className="divider-dot" />
-            <span>AI Enthusiast</span>
+            {/* LEFT — intro */}
+            <div>
+              <div className="hs-mono text-xs text-[var(--blue)] mb-4 flex items-center gap-2">
+                <span className="hs-badge get">GET</span> /
+              </div>
+
+              <h1 className="hs-display text-5xl md:text-6xl font-semibold leading-[1.05] mb-5">
+                Hey, I'm<br />Tariq Rasheed.
+              </h1>
+
+              <p className="text-[var(--ink-2)] text-base md:text-lg leading-relaxed max-w-md mb-9">
+                I build backend systems and full-stack products —
+                then wire AI into them so they actually think.
+                MERN by trade, LLM orchestration by curiosity.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3 mb-9">
+                <a href="#contact" className="hs-btn-primary">
+                  Get in touch <FiArrowUpRight />
+                </a>
+                <a href="#projects" className="hs-btn-secondary">
+                  View work
+                </a>
+              </div>
+
+              <div className="flex items-center gap-2.5">
+                <a href="https://github.com/TariqCO" target="_blank" rel="noreferrer" className="hs-social" aria-label="GitHub">
+                  <FiGithub size={15} />
+                </a>
+                <a href="https://www.linkedin.com/in/tariq-1712tr" target="_blank" rel="noreferrer" className="hs-social" aria-label="LinkedIn">
+                  <FiLinkedin size={15} />
+                </a>
+                <a href="https://mail.google.com/mail/?view=cm&to=tariq.official1712@gmail.com" target="_blank" rel="noreferrer" className="hs-social" aria-label="Email">
+                  <FiMail size={15} />
+                </a>
+              </div>
+            </div>
+
+            {/* RIGHT — JSON response panel */}
+            <div className="hs-json-panel">
+              <div className="hs-json-topbar">
+                <div className="hs-dot-row">
+                  <span className="hs-dot" />
+                  <span className="hs-dot" />
+                  <span className="hs-dot" />
+                </div>
+                <span className="hs-mono text-[0.68rem] text-[var(--ink-3)]">200 OK · 12ms</span>
+              </div>
+              <div className="hs-mono text-[0.82rem] leading-[1.9] p-6">
+                <div>{"{"}</div>
+                {lines.filter(Boolean).map((line, i) => (
+                  <div key={line.k} className="hs-json-line pl-4">
+                    <span style={{ color: "#B5322F" }}>"{line.k}"</span>
+                    <span className="text-[var(--ink-3)]">: </span>
+                    <span style={{ color: "var(--green)" }}>{line.v}</span>
+                    {i < payload.length - 1 && <span className="text-[var(--ink-3)]">,</span>}
+                    {i === lines.length - 1 && !done && <span className="hs-cursor" />}
+                  </div>
+                ))}
+                <div>{"}"}</div>
+              </div>
+            </div>
           </div>
 
-          {/* Description */}
-          <p className="hero-desc text-gray-600 mt-7 leading-relaxed text-base md:text-lg max-w-xl mx-auto">
-            In the era of AI, I focus on{" "}
-            <span className="text-gray-800 font-medium">
-              sharpening core engineering skills
-            </span>{" "}
-            — building scalable web apps while{" "}
-            <span className="text-gray-800 font-medium">
-              leveraging AI tools
-            </span>{" "}
-            to ship faster and better.
-          </p>
-
-          {/* Buttons */}
-          <div className="hero-buttons flex flex-col sm:flex-row gap-3 mt-10 justify-center">
-            <a href="#contact">
-              <button className="btn-primary px-8 py-3 bg-[#009087] text-white rounded-full text-sm font-medium shadow-md">
-                Get In Touch
-              </button>
-            </a>
-            <a href="#projects">
-              <button className="btn-secondary px-8 py-3 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-700 shadow-sm">
-                View My Work
-              </button>
-            </a>
-          </div>
-
-          {/* Social icons */}
-          <div className="hero-icons flex gap-7 mt-10 text-gray-400 text-xl justify-center">
-            <a
-              href="https://github.com/TariqCO"
-              target="_blank"
-              rel="noreferrer"
-              className="social-icon"
-            >
-              <FiGithub />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/tariq-1712tr"
-              target="_blank"
-              rel="noreferrer"
-              className="social-icon"
-            >
-              <FiLinkedin />
-            </a>
-            <a
-              href="https://mail.google.com/mail/?view=cm&to=tariq.official1712@gmail.com"
-              target="_blank"
-              rel="noreferrer"
-              className="social-icon"
-            >
-              <FiMail />
-            </a>
+          {/* Route index */}
+          <div className="flex flex-wrap gap-2.5 mt-16">
+            {routes.map((r) => (
+              <a key={r.path} href={`#${r.path.slice(1)}`} className="hs-route hs-mono">
+                <span className={`hs-badge ${r.method === "GET" ? "get" : "post"}`}>{r.method}</span>
+                {r.path}
+              </a>
+            ))}
           </div>
         </div>
       </section>

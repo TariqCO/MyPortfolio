@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
 const experienceList = [
@@ -16,7 +16,6 @@ const experienceList = [
       "MySQL & RESTful API integration",
     ],
     skills: ["React.js", "Node.js", "Express.js", "MongoDB", "MySQL", "Tailwind CSS", "ShadCN UI", "JWT"],
-    accent: "#009087",
   },
   {
     role: "Freelance Web Developer",
@@ -32,275 +31,142 @@ const experienceList = [
       "Client iterations & post-launch support",
     ],
     skills: ["React.js", "JavaScript", "Tailwind CSS", "REST APIs"],
-    accent: "#009087",
   },
 ];
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 20 },
   visible: (i = 0) => ({
     opacity: 1, y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: i * 0.13 },
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 },
   }),
 };
 
 const ExperienceSection = () => {
-  const [expanded, setExpanded] = useState(null);
-
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-        .exp-section { font-family: 'DM Sans', sans-serif; }
-        .exp-heading { font-family: 'Instrument Serif', serif; }
+        .ex-root {
+          --paper: #FAFAF9; --surface: #FFFFFF; --ink: #14161A;
+          --ink-2: #6B7178; --ink-3: #9BA0A6; --line: #E4E4E1;
+          --blue: #2F6FED; --blue-soft: rgba(47,111,237,0.07);
+          font-family: 'Inter', sans-serif;
+          background: var(--surface);
+          color: var(--ink);
+        }
+        .ex-mono { font-family: 'JetBrains Mono', monospace; }
+        .ex-display { font-family: 'Space Grotesk', sans-serif; }
 
-        .section-tag {
-          display: inline-flex; align-items: center;
-          font-size: 0.72rem; font-weight: 600;
-          text-transform: uppercase; letter-spacing: 0.1em;
-          color: #009087; margin-bottom: 10px;
-        }
-        .section-tag::before {
-          content: '';
-          display: inline-block;
-          width: 20px; height: 1.5px;
-          background: #009087; margin-right: 8px;
-        }
-
-        .timeline-line {
-          position: absolute;
-          left: 19px; top: 0; bottom: 0;
-          width: 1.5px;
-          background: linear-gradient(to bottom, #009087 0%, #e5e7eb 100%);
-        }
-
-        .timeline-dot-outer {
-          position: absolute;
-          left: -41px;
-          top: 28px;
-          width: 16px; height: 16px;
-          border-radius: 50%;
-          background: white;
-          border: 2px solid #009087;
-          display: flex; align-items: center; justify-content: center;
-          box-shadow: 0 0 0 4px rgba(0,144,135,0.1);
-          z-index: 2;
-          transition: box-shadow 0.3s ease;
-        }
-        .timeline-dot-inner {
-          width: 6px; height: 6px;
-          border-radius: 50%;
-          background: #009087;
-        }
-        .exp-card:hover .timeline-dot-outer {
-          box-shadow: 0 0 0 7px rgba(0,144,135,0.15);
-        }
-
-        .exp-card {
-          background: white;
-          border: 1px solid #f0f0f0;
-          border-radius: 20px;
-          padding: 28px;
-          box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-          transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
-          position: relative;
-          overflow: hidden;
-          cursor: default;
-        }
-        .exp-card::before {
-          content: '';
-          position: absolute;
-          top: 0; left: 0; right: 0;
-          height: 3px;
-          background: linear-gradient(90deg, #006f68, #009087, #00b3a4);
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-        .exp-card:hover {
-          box-shadow: 0 20px 50px rgba(0,144,135,0.1);
-          border-color: rgba(0,144,135,0.18);
-          transform: translateY(-4px);
-        }
-        .exp-card:hover::before { opacity: 1; }
-
-        .exp-role {
-          font-family: 'Instrument Serif', serif;
-          font-size: 1.35rem;
-          color: #111;
-        }
-
-        .exp-company {
-          font-size: 0.875rem;
-          font-weight: 600;
-          color: #009087;
-        }
-
-        .exp-meta {
+        .ex-endpoint {
           display: flex; align-items: center; gap: 10px;
-          flex-wrap: wrap;
-          margin-top: 4px; margin-bottom: 14px;
+          font-size: 0.78rem;
+          padding-bottom: 16px;
+          margin-bottom: 12px;
+          border-bottom: 1px solid var(--line);
+        }
+        .ex-badge {
+          font-size: 0.68rem; font-weight: 600;
+          padding: 2px 7px; border-radius: 3px;
+          background: var(--blue-soft); color: var(--blue);
+        }
+        .ex-status { margin-left: auto; font-size: 0.7rem; color: var(--ink-3); }
+
+        .ex-log {
+          border: 1px solid var(--line);
+          border-radius: 8px;
+          overflow: hidden;
+        }
+        .ex-entry {
+          padding: 22px 22px;
+          border-bottom: 1px solid var(--line);
+          position: relative;
+        }
+        .ex-entry:last-child { border-bottom: none; }
+
+        .ex-timestamp {
+          font-size: 0.72rem; color: var(--blue);
+          margin-bottom: 8px;
+          display: flex; align-items: center; gap: 8px;
         }
 
-        .exp-type {
-          font-size: 0.7rem; font-weight: 600;
-          text-transform: uppercase; letter-spacing: 0.08em;
-          color: #9ca3af;
-        }
+        .ex-role { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 600; color: var(--ink); }
+        .ex-company { font-size: 0.82rem; color: var(--ink-2); margin-top: 2px; margin-bottom: 12px; }
+        .ex-company b { color: var(--ink); font-weight: 600; }
 
-        .exp-duration {
-          font-size: 0.7rem; font-weight: 500;
-          background: rgba(0,144,135,0.08);
-          color: #009087;
-          border-radius: 99px;
-          padding: 2px 10px;
-        }
+        .ex-desc { font-size: 0.85rem; color: var(--ink-2); line-height: 1.7; margin-bottom: 14px; max-width: 640px; }
 
-        .exp-desc {
-          font-size: 0.875rem;
-          color: #6b7280;
-          line-height: 1.7;
-          margin-bottom: 16px;
+        .ex-highlight-line {
+          font-size: 0.8rem; color: var(--ink-2);
+          display: flex; align-items: flex-start; gap: 8px;
+          line-height: 1.6;
         }
+        .ex-highlight-line::before { content: '›'; color: var(--blue); font-weight: 600; }
 
-        .highlights-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 8px;
-          margin-bottom: 18px;
-        }
-        .highlight-item {
-          display: flex; align-items: flex-start; gap: 7px;
-          font-size: 0.78rem; color: #374151;
-          line-height: 1.4;
-        }
-        .highlight-dot {
-          width: 5px; height: 5px; border-radius: 50%;
-          background: #009087; flex-shrink: 0; margin-top: 5px;
-        }
-
-        .skill-tag {
-          padding: 3px 11px;
-          font-size: 0.7rem; font-weight: 500;
-          background: #f9fafb;
-          border: 1px solid #e5e7eb;
-          border-radius: 99px;
-          color: #374151;
-          transition: background 0.2s, border-color 0.2s, color 0.2s;
-        }
-        .skill-tag:hover {
-          background: rgba(0,144,135,0.07);
-          border-color: rgba(0,144,135,0.25);
-          color: #009087;
-        }
-
-        .toggle-btn {
-          font-size: 0.75rem; font-weight: 500;
-          color: #009087;
-          background: none; border: none; cursor: pointer;
-          padding: 0; margin-top: 10px;
-          display: inline-flex; align-items: center; gap: 4px;
-          transition: gap 0.2s ease;
-        }
-        .toggle-btn:hover { gap: 8px; }
-
-        .grid-bg-exp {
-          background-image:
-            linear-gradient(rgba(0,144,135,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,144,135,0.03) 1px, transparent 1px);
-          background-size: 40px 40px;
+        .ex-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+        .ex-tag {
+          font-size: 0.68rem; font-weight: 500;
+          padding: 3px 9px; border-radius: 3px;
+          background: #F5F5F3; color: var(--ink-2);
         }
       `}</style>
 
-      <section
-        id="experience"
-        className="exp-section grid-bg-exp w-full px-6 py-24 bg-gray-50 text-gray-900 flex justify-center"
-      >
+      <section id="experience" className="ex-root w-full px-6 py-24 flex justify-center">
         <div className="max-w-4xl w-full">
 
-          {/* ── Heading ── */}
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="mb-16 text-center"
+            initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp}
+            className="ex-endpoint ex-mono"
           >
-            <motion.span custom={0} variants={fadeUp} className="section-tag" style={{ justifyContent: "center" }}>
-              Where I've Worked
-            </motion.span>
-            <motion.h2
-              custom={1}
-              variants={fadeUp}
-              className="exp-heading text-4xl md:text-5xl font-normal text-gray-900 leading-tight mb-4"
-            >
-              My <span className="italic" style={{ color: "#009087" }}>Experience</span>
-            </motion.h2>
-            <motion.p
-              custom={2}
-              variants={fadeUp}
-              className="text-gray-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed"
-            >
-              From shipping production features at a software house to delivering
-              client projects independently — here's where I've put my skills to work.
-            </motion.p>
+            <span className="ex-badge">GET</span>
+            /experience
+            <span className="ex-status">200 OK</span>
           </motion.div>
 
-          {/* ── Timeline ── */}
-          <div className="relative pl-14">
-            <div className="timeline-line" />
+          <motion.h2
+            custom={1} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            className="ex-display text-4xl md:text-5xl font-semibold mb-3"
+          >
+            Work log
+          </motion.h2>
+          <motion.p
+            custom={2} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            className="text-[var(--ink-2)] max-w-lg text-sm md:text-base leading-relaxed mb-12"
+          >
+            Where I've shipped — from a production software house to
+            client work I owned start to finish.
+          </motion.p>
 
-            <div className="space-y-10">
-              {experienceList.map((exp, index) => (
-                <motion.div
-                  key={index}
-                  custom={index}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={fadeUp}
-                  className="relative exp-card"
-                >
-                  {/* Timeline dot */}
-                  <div className="timeline-dot-outer">
-                    <div className="timeline-dot-inner" />
-                  </div>
-
-                  {/* Header */}
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-1">
-                    <h3 className="exp-role">{exp.role}</h3>
-                    <span className="exp-duration shrink-0">{exp.duration}</span>
-                  </div>
-
-                  <div className="exp-meta">
-                    <span className="exp-company">{exp.company}</span>
-                    <span className="w-1 h-1 rounded-full bg-gray-300 inline-block" />
-                    <span className="exp-type">{exp.type}</span>
-                  </div>
-
-                  {/* Description */}
-                  <p className="exp-desc">{exp.description}</p>
-
-                  {/* Highlights */}
-                  <div className="highlights-grid">
-                    {exp.highlights.map((h, i) => (
-                      <div key={i} className="highlight-item">
-                        <span className="highlight-dot" />
-                        <span>{h}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Skills */}
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {exp.skills.map((skill, i) => (
-                      <span key={i} className="skill-tag">{skill}</span>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+          <div className="ex-log">
+            {experienceList.map((exp, i) => (
+              <motion.div
+                key={exp.role}
+                custom={i + 3}
+                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+                className="ex-entry"
+              >
+                <div className="ex-timestamp ex-mono">
+                  [{exp.duration}]
+                </div>
+                <h3 className="ex-role">{exp.role}</h3>
+                <p className="ex-company">
+                  <b>{exp.company}</b> · {exp.type}
+                </p>
+                <p className="ex-desc">{exp.description}</p>
+                <div className="space-y-1.5 mb-1">
+                  {exp.highlights.map((h) => (
+                    <div key={h} className="ex-highlight-line">{h}</div>
+                  ))}
+                </div>
+                <div className="ex-tags">
+                  {exp.skills.map((s) => (
+                    <span key={s} className="ex-tag ex-mono">{s}</span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
           </div>
-
         </div>
       </section>
     </>

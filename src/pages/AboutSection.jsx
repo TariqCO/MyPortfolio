@@ -1,290 +1,203 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 20 },
   visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: i * 0.12 },
+    opacity: 1, y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 },
   }),
 };
 
+const fields = [
+  { label: "role", value: "Full-Stack Developer" },
+  { label: "experience", value: "1+ years" },
+  { label: "location", value: "Karachi, Pakistan" },
+  { label: "email", value: "tariq.official1712@gmail.com" },
+];
+
 const AboutSection = () => {
-  const [isAvailable] = useState(true);
-
-  const previewBio =
-    "I'm Tariq — a Full-Stack Developer based in Karachi, building clean, scalable web applications with the MERN stack. I love weaving AI into real products, shipping features that solve actual problems, and continuously pushing what I know.";
-
-  const stats = [
-    { value: "1+", label: "Years Experience" },
-    { value: "5+", label: "Projects Shipped" },
-    { value: "2+", label: "Clients Served" },
-  ];
+  const bio =
+    "I'm Tariq — a full-stack developer based in Karachi, building clean, scalable web applications with the MERN stack. Lately I've been weaving AI into real products: multi-agent systems, LLM-backed tools, and features that solve actual problems rather than just demoing well.";
 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-        .about-section { font-family: 'DM Sans', sans-serif; }
-
-        .about-heading { font-family: 'Instrument Serif', serif; }
-
-        @keyframes softPulse {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(0,144,135,0.35); }
-          50%       { box-shadow: 0 0 0 6px rgba(0,144,135,0); }
+        .as-root {
+          --paper: #FAFAF9; --surface: #FFFFFF; --ink: #14161A;
+          --ink-2: #6B7178; --ink-3: #9BA0A6; --line: #E4E4E1;
+          --blue: #2F6FED; --blue-soft: rgba(47,111,237,0.07);
+          --green: #16A34A; --green-soft: rgba(22,163,74,0.08);
+          font-family: 'Inter', sans-serif;
+          background: var(--surface);
+          color: var(--ink);
         }
-        .status-pulse { animation: softPulse 2.2s ease-in-out infinite; }
+        .as-mono { font-family: 'JetBrains Mono', monospace; }
+        .as-display { font-family: 'Space Grotesk', sans-serif; }
 
-        @keyframes floatImg {
-          0%, 100% { transform: translateY(0px); }
-          50%       { transform: translateY(-10px); }
+        .as-endpoint {
+          display: flex; align-items: center; gap: 10px;
+          font-size: 0.78rem;
+          padding-bottom: 16px;
+          margin-bottom: 28px;
+          border-bottom: 1px solid var(--line);
         }
-        .img-float { animation: floatImg 5s ease-in-out infinite; }
+        .as-badge {
+          font-size: 0.68rem; font-weight: 600;
+          padding: 2px 7px; border-radius: 3px;
+          background: var(--blue-soft); color: var(--blue);
+        }
+        .as-status {
+          margin-left: auto;
+          font-size: 0.7rem; color: var(--ink-3);
+        }
 
-        .img-wrapper {
-          position: relative;
-          border-radius: 20px;
+        .as-field-row {
+          display: flex; justify-content: space-between; align-items: baseline;
+          padding: 11px 0;
+          border-bottom: 1px solid #F0F0EE;
+          font-size: 0.84rem;
+        }
+        .as-field-key { color: var(--ink-3); }
+        .as-field-val { color: var(--ink); font-weight: 500; text-align: right; }
+
+        .as-panel {
+          border: 1px solid var(--line);
+          border-radius: 8px;
           overflow: hidden;
-          box-shadow: 0 24px 60px rgba(0,0,0,0.12);
-          transition: box-shadow 0.3s ease;
         }
-        .img-wrapper:hover { box-shadow: 0 32px 80px rgba(0,144,135,0.18); }
-
-        .img-wrapper::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(160deg, rgba(0,144,135,0.08) 0%, transparent 60%);
-          z-index: 10;
-          pointer-events: none;
-          border-radius: 20px;
+        .as-panel-head {
+          padding: 9px 14px;
+          background: #FCFCFB;
+          border-bottom: 1px solid var(--line);
+          font-size: 0.68rem;
+          color: var(--ink-3);
         }
 
-        .corner-accent {
-          position: absolute;
-          width: 56px; height: 56px;
-          border-radius: 6px;
-          background: #009087;
-          opacity: 0.12;
-          z-index: 0;
+        .as-link {
+          display: inline-flex; align-items: center; gap: 6px;
+          font-size: 0.82rem; font-weight: 500;
+          color: var(--blue);
+          transition: gap 0.15s ease;
         }
+        .as-link:hover { gap: 10px; }
 
-        .stat-card {
-          background: white;
-          border: 1px solid #f0f0f0;
-          border-radius: 14px;
-          padding: 14px 18px;
-          text-align: center;
-          box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        .as-btn-primary {
+          display: inline-flex; align-items: center; gap: 6px;
+          padding: 10px 18px;
+          background: var(--ink); color: var(--paper);
+          border-radius: 5px; font-size: 0.85rem; font-weight: 500;
+          transition: transform 0.15s ease, background 0.15s ease;
         }
-        .stat-card:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 8px 24px rgba(0,144,135,0.12);
-        }
-        .stat-value {
-          font-family: 'Instrument Serif', serif;
-          font-size: 1.8rem;
-          color: #009087;
-          line-height: 1;
-        }
-        .stat-label { font-size: 0.72rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+        .as-btn-primary:hover { background: var(--blue); transform: translateY(-1px); }
 
-        .info-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 10px 0;
-          border-bottom: 1px solid #f3f4f6;
-          font-size: 0.875rem;
+        .as-btn-secondary {
+          display: inline-flex; align-items: center; gap: 6px;
+          padding: 10px 18px;
+          border: 1px solid var(--line); color: var(--ink);
+          border-radius: 5px; font-size: 0.85rem; font-weight: 500;
+          transition: transform 0.15s ease, border-color 0.15s ease;
         }
-        .info-label { font-weight: 500; color: #374151; }
-        .info-value { color: #6b7280; }
+        .as-btn-secondary:hover { border-color: var(--ink); transform: translateY(-1px); }
 
-        .teal-accent { color: #009087; }
+        .as-avail {
+          display: inline-flex; align-items: center; gap: 7px;
+          font-size: 0.78rem; color: var(--green); font-weight: 500;
+        }
+        @keyframes asPulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(22,163,74,0.35); }
+          50%      { box-shadow: 0 0 0 5px rgba(22,163,74,0); }
+        }
+        .as-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: asPulse 2.2s ease-in-out infinite; }
 
-        .btn-primary-about {
-          position: relative; overflow: hidden;
-          padding: 11px 24px;
-          background: #009087; color: white;
-          border-radius: 10px; font-size: 0.875rem; font-weight: 500;
-          box-shadow: 0 4px 14px rgba(0,144,135,0.3);
-          transition: transform 0.18s ease, box-shadow 0.18s ease;
-          display: inline-block;
-        }
-        .btn-primary-about:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 22px rgba(0,144,135,0.38);
-        }
-        .btn-primary-about:active { transform: translateY(0); }
-
-        .btn-secondary-about {
-          padding: 11px 24px;
-          border: 1.5px solid #e5e7eb; color: #374151;
-          border-radius: 10px; font-size: 0.875rem; font-weight: 500;
-          background: white;
-          transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
-          display: inline-block;
-        }
-        .btn-secondary-about:hover {
-          transform: translateY(-2px);
-          border-color: #009087;
-          box-shadow: 0 4px 14px rgba(0,0,0,0.07);
-        }
-        .btn-secondary-about:active { transform: translateY(0); }
-
-        .read-more-link {
-          font-size: 0.875rem; font-weight: 500;
-          color: #009087;
-          display: inline-flex; align-items: center; gap: 4px;
-          transition: gap 0.2s ease;
-        }
-        .read-more-link:hover { gap: 8px; }
-
-        .section-tag {
-          display: inline-flex; align-items: center; gap-6px;
-          font-size: 0.72rem; font-weight: 600;
-          text-transform: uppercase; letter-spacing: 0.1em;
-          color: #009087;
-          margin-bottom: 12px;
-        }
-        .section-tag::before {
-          content: '';
-          display: inline-block;
-          width: 20px; height: 1.5px;
-          background: #009087;
-          margin-right: 8px;
+        .as-photo-wrap {
+          border: 1px solid var(--line);
+          border-radius: 8px;
+          overflow: hidden;
+          filter: grayscale(0.15);
         }
       `}</style>
 
-      <section
-        id="about"
-        className="about-section w-full px-6 py-24 bg-white text-gray-900 flex justify-center"
-      >
-        <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <section id="about" className="as-root w-full px-6 py-24 flex justify-center">
+        <div className="max-w-5xl w-full">
 
-          {/* ── IMAGE COLUMN ── */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            viewport={{ once: true }}
-            className="flex justify-center md:justify-start"
+            initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp}
+            className="as-endpoint as-mono"
           >
-            <div className="relative">
-              {/* decorative corner accents */}
-              <div className="corner-accent" style={{ top: -12, left: -12 }} />
-              <div className="corner-accent" style={{ bottom: -12, right: -12 }} />
+            <span className="as-badge">GET</span>
+            /about
+            <span className="as-status">200 OK</span>
+          </motion.div>
 
-              {/* floating image */}
-              <div className="img-float img-wrapper w-72 h-80 md:w-80 md:h-96">
+          <div className="grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr] gap-14 items-start">
+
+            {/* photo */}
+            <motion.div
+              initial={{ opacity: 0, x: -24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="as-photo-wrap w-full aspect-[4/5]">
                 <img
                   src="/images/profile.jpeg"
                   alt="Tariq Rasheed"
                   className="w-full h-full object-cover"
                 />
               </div>
+            </motion.div>
 
-              {/* Stats strip — overlapping bottom of image */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                viewport={{ once: true }}
-                className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[calc(100%-16px)] flex gap-2 bg-gray-50 border border-gray-100 rounded-2xl p-3 shadow-lg"
+            {/* content */}
+            <div>
+              <motion.h2
+                custom={1} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+                className="as-display text-4xl md:text-5xl font-semibold mb-5"
               >
-                {stats.map((s, i) => (
-                  <div key={i} className="stat-card flex-1">
-                    <div className="stat-value">{s.value}</div>
-                    <div className="stat-label">{s.label}</div>
-                  </div>
-                ))}
+                About me
+              </motion.h2>
+
+              <motion.p
+                custom={2} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+                className="text-[var(--ink-2)] text-sm md:text-base leading-relaxed mb-4 max-w-md"
+              >
+                {bio}
+              </motion.p>
+
+              <motion.div custom={3} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mb-8">
+                <Link to="/about" className="as-link">
+                  Read full profile <span>→</span>
+                </Link>
+              </motion.div>
+
+              <motion.div
+                custom={4} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+                className="as-panel mb-8"
+              >
+                <div className="as-panel-head as-mono">response.fields</div>
+                <div className="px-4">
+                  {fields.map((f) => (
+                    <div key={f.label} className="as-field-row">
+                      <span className="as-field-key as-mono">{f.label}</span>
+                      <span className="as-field-val">{f.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div
+                custom={5} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+                className="flex flex-wrap items-center gap-4"
+              >
+                <a href="#contact" className="as-btn-primary">Contact me</a>
+                <a href="files/MyResume.pdf" download className="as-btn-secondary">Download résumé</a>
+                <span className="as-avail"><span className="as-dot" /> Available for work</span>
               </motion.div>
             </div>
-          </motion.div>
-
-          {/* ── CONTENT COLUMN ── */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="flex flex-col mt-12 md:mt-0"
-          >
-            {/* Section tag */}
-            <motion.span custom={0} variants={fadeUp} className="section-tag">
-              Who I Am
-            </motion.span>
-
-            {/* Heading */}
-            <motion.h2
-              custom={1}
-              variants={fadeUp}
-              className="about-heading text-4xl md:text-5xl font-normal text-gray-900 leading-tight mb-5"
-            >
-              About <span className="italic teal-accent">Me</span>
-            </motion.h2>
-
-            {/* Bio */}
-            <motion.p
-              custom={2}
-              variants={fadeUp}
-              className="text-gray-500 text-sm md:text-base leading-relaxed mb-3 max-w-md"
-            >
-              {previewBio}
-            </motion.p>
-
-            {/* Read More */}
-            <motion.div custom={3} variants={fadeUp} className="mb-6">
-              <Link to="/about" className="read-more-link">
-                Read More <span>→</span>
-              </Link>
-            </motion.div>
-
-            {/* Info rows */}
-            <motion.div custom={4} variants={fadeUp} className="mb-5">
-              {[
-                { label: "Role",       value: "Full-Stack Developer" },
-                { label: "Experience", value: "1+ Years" },
-                { label: "Location",   value: "Karachi, Pakistan" },
-                { label: "Email",      value: "tariq.official1712@gmail.com" },
-              ].map(({ label, value }) => (
-                <div key={label} className="info-row">
-                  <span className="info-label">{label}</span>
-                  <span className="info-value">{value}</span>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* Availability badge */}
-            <motion.div
-              custom={5}
-              variants={fadeUp}
-              className="flex items-center gap-2.5 mb-8"
-            >
-              <span className="status-pulse w-2.5 h-2.5 rounded-full bg-[#009087] block" />
-              <span className="text-sm font-medium text-gray-600">
-                Available for Work
-              </span>
-            </motion.div>
-
-            {/* Buttons */}
-            <motion.div
-              custom={6}
-              variants={fadeUp}
-              className="flex flex-col sm:flex-row gap-3"
-            >
-              <a href="#contact" className="btn-primary-about">
-                Contact Me
-              </a>
-              <a href="files/MyResume.pdf" download className="btn-secondary-about">
-                Download Resume
-              </a>
-            </motion.div>
-          </motion.div>
-
+          </div>
         </div>
       </section>
     </>

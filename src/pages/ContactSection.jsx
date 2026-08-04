@@ -1,53 +1,23 @@
-import { motion } from "framer-motion";
+import React from "react";
 import {
-  Mail,
-  Github,
-  Linkedin,
-  ArrowUp,
-  Instagram,
-  MapPin,
-  MessageCircle,
+  Mail, Github, Linkedin, ArrowUp, Instagram, MapPin,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 20 },
   visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: i * 0.13 },
+    opacity: 1, y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 },
   }),
 };
 
 const socials = [
-  {
-    label: "GitHub",
-    href: "https://github.com/TariqCO",
-    icon: <Github size={18} />,
-    hoverBg: "#181717",
-    hoverColor: "#fff",
-  },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/tariq-1712tr",
-    icon: <Linkedin size={18} />,
-    hoverBg: "#0A66C2",
-    hoverColor: "#fff",
-  },
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/__tariqrasheed__/",
-    icon: <Instagram size={18} />,
-    hoverBg: "#E1306C",
-    hoverColor: "#fff",
-  },
-  {
-    label: "WhatsApp",
-    href: "https://wa.me/923711175464",
-    icon: <FaWhatsapp size={19} />,
-    hoverBg: "#25D366",
-    hoverColor: "#fff",
-  },
+  { label: "GitHub", href: "https://github.com/TariqCO", icon: <Github size={16} /> },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/tariq-1712tr", icon: <Linkedin size={16} /> },
+  { label: "Instagram", href: "https://www.instagram.com/__tariqrasheed__/", icon: <Instagram size={16} /> },
+  { label: "WhatsApp", href: "https://wa.me/923711175464", icon: <FaWhatsapp size={16} /> },
 ];
 
 export default function ContactSection() {
@@ -56,351 +26,163 @@ export default function ContactSection() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-        .contact-section { font-family: 'DM Sans', sans-serif; }
-        .contact-heading { font-family: 'Instrument Serif', serif; }
-
-        .section-tag {
-          display: inline-flex; align-items: center;
-          font-size: 0.72rem; font-weight: 600;
-          text-transform: uppercase; letter-spacing: 0.1em;
-          color: #009087;
+        .co-root {
+          --paper: #FAFAF9; --surface: #FFFFFF; --ink: #14161A;
+          --ink-2: #6B7178; --ink-3: #9BA0A6; --line: #E4E4E1;
+          --blue: #2F6FED;
+          --green: #16A34A; --green-soft: rgba(22,163,74,0.08);
+          font-family: 'Inter', sans-serif;
+          background: var(--surface);
+          color: var(--ink);
         }
-        .section-tag::before {
-          content: '';
-          display: inline-block;
-          width: 20px; height: 1.5px;
-          background: #009087; margin-right: 8px;
-        }
+        .co-mono { font-family: 'JetBrains Mono', monospace; }
+        .co-display { font-family: 'Space Grotesk', sans-serif; }
 
-        .contact-card {
-          background: white;
-          border: 1px solid #f0f0f0;
-          border-radius: 24px;
-          padding: 40px;
-          box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-          position: relative;
+        .co-endpoint {
+          display: flex; align-items: center; gap: 10px;
+          font-size: 0.78rem;
+          padding-bottom: 16px;
+          margin-bottom: 12px;
+          border-bottom: 1px solid var(--line);
+        }
+        .co-badge {
+          font-size: 0.68rem; font-weight: 600;
+          padding: 2px 7px; border-radius: 3px;
+          background: var(--green-soft); color: var(--green);
+        }
+        .co-status { margin-left: auto; font-size: 0.7rem; color: var(--ink-3); }
+
+        .co-panel {
+          border: 1px solid var(--line);
+          border-radius: 8px;
           overflow: hidden;
-          transition: box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        .contact-card:hover {
-          box-shadow: 0 16px 48px rgba(0,144,135,0.1);
-          border-color: rgba(0,144,135,0.18);
-        }
-        .contact-card::before {
-          content: '';
-          position: absolute;
-          top: 0; left: 0; right: 0;
-          height: 3px;
-          background: linear-gradient(90deg, #006f68, #009087, #00b3a4);
+          background: var(--paper);
         }
 
-        /* Soft orb inside card */
-        .card-orb {
-          position: absolute;
-          top: -60px; right: -60px;
-          width: 200px; height: 200px;
-          border-radius: 50%;
-          background: radial-gradient(circle, rgba(0,144,135,0.07) 0%, transparent 70%);
-          pointer-events: none;
+        .co-row {
+          display: flex; align-items: center; justify-content: space-between;
+          gap: 16px; flex-wrap: wrap;
+          padding: 26px;
+          border-bottom: 1px solid var(--line);
         }
 
-        .email-display {
-          font-size: 1.1rem;
-          font-weight: 500;
-          color: #111;
-          word-break: break-all;
-        }
+        .co-label { font-size: 0.68rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+        .co-value { font-size: 1.05rem; font-weight: 600; color: var(--ink); word-break: break-all; }
 
-        .email-label {
-          font-size: 0.72rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.09em;
-          color: #9ca3af;
-          margin-bottom: 6px;
+        .co-send {
+          display: inline-flex; align-items: center; gap: 7px;
+          padding: 11px 20px;
+          background: var(--ink); color: var(--paper);
+          border-radius: 5px; font-size: 0.85rem; font-weight: 500;
+          text-decoration: none; flex-shrink: 0;
+          transition: background 0.15s ease, transform 0.15s ease;
         }
+        .co-send:hover { background: var(--blue); transform: translateY(-1px); }
 
-        .send-btn {
-          display: inline-flex; align-items: center; gap: 8px;
-          padding: 12px 26px;
-          background: #009087;
-          color: white;
-          border-radius: 99px;
-          font-size: 0.875rem; font-weight: 500;
-          box-shadow: 0 4px 14px rgba(0,144,135,0.3);
-          transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s;
-          white-space: nowrap;
+        .co-socials-row { display: flex; align-items: center; gap: 10px; padding: 22px 26px; flex-wrap: wrap; }
+        .co-social {
+          display: inline-flex; align-items: center; gap: 7px;
+          padding: 8px 14px;
+          border: 1px solid var(--line); border-radius: 5px;
+          font-size: 0.78rem; font-weight: 500; color: var(--ink-2);
           text-decoration: none;
+          transition: border-color 0.15s ease, color 0.15s ease;
         }
-        .send-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 22px rgba(0,144,135,0.38);
-          background: #007d75;
-        }
-        .send-btn:active { transform: translateY(0); }
+        .co-social:hover { border-color: var(--ink); color: var(--ink); }
 
-        .divider {
-          height: 1px;
-          background: linear-gradient(90deg, transparent, #e5e7eb 20%, #e5e7eb 80%, transparent);
-          margin: 32px 0;
+        .co-status-strip {
+          display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+          padding: 16px 26px;
+          font-size: 0.76rem; color: var(--ink-2);
         }
+        @keyframes coPulse { 0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,0.35);} 50%{box-shadow:0 0 0 5px rgba(22,163,74,0);} }
+        .co-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: coPulse 2.2s ease-in-out infinite; }
 
-        .find-me-label {
-          font-size: 0.72rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.09em;
-          color: #9ca3af;
-          margin-bottom: 14px;
-        }
-
-        .social-btn {
-          width: 44px; height: 44px;
-          border-radius: 50%;
-          border: 1.5px solid #e5e7eb;
-          background: white;
-          display: flex; align-items: center; justify-content: center;
-          color: #374151;
-          text-decoration: none;
-          transition: transform 0.2s ease, border-color 0.2s, box-shadow 0.2s;
-          position: relative;
-          overflow: hidden;
-        }
-        .social-btn::before {
-          content: '';
-          position: absolute; inset: 0;
-          border-radius: 50%;
-          opacity: 0;
-          transition: opacity 0.25s ease;
-        }
-        .social-btn:hover { transform: translateY(-3px) scale(1.08); }
-        .social-btn svg, .social-btn * { position: relative; z-index: 1; }
-
-        .social-btn.github:hover  { border-color: #181717; box-shadow: 0 6px 16px rgba(24,23,23,0.2); color: #fff; background: #181717; }
-        .social-btn.linkedin:hover{ border-color: #0A66C2; box-shadow: 0 6px 16px rgba(10,102,194,0.25); color: #fff; background: #0A66C2; }
-        .social-btn.instagram:hover{ border-color: #E1306C; box-shadow: 0 6px 16px rgba(225,48,108,0.25); color: #fff; background: #E1306C; }
-        .social-btn.whatsapp:hover { border-color: #25D366; box-shadow: 0 6px 16px rgba(37,211,102,0.25); color: #fff; background: #25D366; }
-
-        .location-chip {
-          display: inline-flex; align-items: center; gap: 6px;
-          font-size: 0.78rem; font-weight: 500;
-          color: #6b7280;
-          background: #f9fafb;
-          border: 1px solid #f0f0f0;
-          border-radius: 99px;
-          padding: 5px 14px;
-        }
-        .location-chip svg { color: #009087; }
-
-        .avail-chip {
-          display: inline-flex; align-items: center; gap: 6px;
-          font-size: 0.78rem; font-weight: 500;
-          color: #009087;
-          background: rgba(0,144,135,0.07);
-          border: 1px solid rgba(0,144,135,0.18);
-          border-radius: 99px;
-          padding: 5px 14px;
-        }
-
-        @keyframes pulse-dot {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(0,144,135,0.35); }
-          50%       { box-shadow: 0 0 0 5px rgba(0,144,135,0); }
-        }
-        .pulse-dot {
-          width: 7px; height: 7px; border-radius: 50%;
-          background: #009087;
-          animation: pulse-dot 2.2s ease-in-out infinite;
-          flex-shrink: 0;
-        }
-
-        .back-top-btn {
-          position: fixed; bottom: 28px; right: 28px;
-          width: 46px; height: 46px;
-          border-radius: 50%;
-          background: #009087;
-          color: white;
+        .co-back-top {
+          position: fixed; bottom: 26px; right: 26px;
+          width: 42px; height: 42px;
+          border-radius: 6px;
+          background: var(--ink); color: var(--paper);
           border: none; cursor: pointer;
           display: flex; align-items: center; justify-content: center;
-          box-shadow: 0 4px 16px rgba(0,144,135,0.35);
-          transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s;
+          transition: background 0.15s ease, transform 0.15s ease;
           z-index: 50;
         }
-        .back-top-btn:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 8px 24px rgba(0,144,135,0.45);
-          background: #007d75;
-        }
-        .back-top-btn:active { transform: translateY(0); }
+        .co-back-top:hover { background: var(--blue); transform: translateY(-2px); }
 
-        .footer-note {
-          font-size: 0.72rem;
-          color: #9ca3af;
-          text-align: center;
-          margin-top: 32px;
-          letter-spacing: 0.02em;
-        }
-
-        .grid-bg-contact {
-          background-image:
-            linear-gradient(rgba(0,144,135,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,144,135,0.03) 1px, transparent 1px);
-          background-size: 40px 40px;
-        }
+        .co-footer { font-size: 0.72rem; color: var(--ink-3); text-align: center; margin-top: 26px; }
       `}</style>
 
-      <section
-        id="contact"
-        className="contact-section grid-bg-contact w-full py-24 bg-gray-50 flex justify-center relative"
-      >
-        <div className="max-w-3xl w-full px-6">
-          {/* ── Heading ── */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-14"
-          >
-            <motion.span
-              custom={0}
-              variants={fadeUp}
-              className="section-tag"
-              style={{ justifyContent: "center" }}
-            >
-              Get In Touch
-            </motion.span>
-            <motion.h2
-              custom={1}
-              variants={fadeUp}
-              className="contact-heading text-4xl md:text-5xl font-normal text-gray-900 leading-tight mt-2 mb-4"
-            >
-              Let's Work{" "}
-              <span className="italic" style={{ color: "#009087" }}>
-                Together
-              </span>
-            </motion.h2>
-            <motion.p
-              custom={2}
-              variants={fadeUp}
-              className="text-gray-500 max-w-md mx-auto text-sm md:text-base leading-relaxed"
-            >
-              Have a project in mind, need a freelancer, or just want to
-              connect? I'm always open to new ideas and opportunities.
-            </motion.p>
+      <section id="contact" className="co-root w-full px-6 py-24 flex justify-center relative">
+        <div className="max-w-3xl w-full">
 
-            {/* Status chips */}
-            <motion.div
-              custom={3}
-              variants={fadeUp}
-              className="flex items-center justify-center gap-3 flex-wrap mt-6"
-            >
-              <span className="avail-chip">
-                <span className="pulse-dot" />
-                Available for work
-              </span>
-              <span className="location-chip">
-                <MapPin size={13} />
-                Karachi, Pakistan
-              </span>
-            </motion.div>
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp}
+            className="co-endpoint co-mono"
+          >
+            <span className="co-badge">POST</span>
+            /contact
+            <span className="co-status">ready</span>
           </motion.div>
 
-          {/* ── Contact Card ── */}
-          <motion.div
-            custom={4}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            className="contact-card"
+          <motion.h2
+            custom={1} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            className="co-display text-4xl md:text-5xl font-semibold mb-3"
           >
-            <div className="card-orb" />
+            Let's work together
+          </motion.h2>
+          <motion.p
+            custom={2} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            className="text-[var(--ink-2)] max-w-md text-sm md:text-base leading-relaxed mb-10"
+          >
+            Have a project, a role, or just a question? Send a request —
+            I read every message myself.
+          </motion.p>
 
-            {/* Email row */}
-            <div className="flex items-center justify-between flex-wrap gap-6 relative z-10">
+          <motion.div
+            custom={3} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+            className="co-panel"
+          >
+            <div className="co-status-strip border-b border-[var(--line)]">
+              <span className="flex items-center gap-2"><span className="co-dot" /> available for work</span>
+              <span className="flex items-center gap-2"><MapPin size={13} /> Karachi, Pakistan</span>
+            </div>
+
+            <div className="co-row">
               <div>
-                <p className="email-label">Reach me at</p>
-                <p className="email-display">tariq.official1712@gmail.com</p>
+                <div className="co-label co-mono">reach me at</div>
+                <div className="co-value">tariq.official1712@gmail.com</div>
               </div>
               <a
                 href="https://mail.google.com/mail/?view=cm&to=tariq.official1712@gmail.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="send-btn"
+                target="_blank" rel="noopener noreferrer"
+                className="co-send"
               >
-                <Mail size={15} />
-                Send Email
+                <Mail size={14} /> Send email
               </a>
             </div>
 
-            <div className="divider" />
-
-            {/* Socials row */}
-            <div className="relative z-10">
-              <p className="find-me-label">Find me on</p>
-              <div className="flex items-center gap-3 flex-wrap">
-                <a
-                  href="https://github.com/TariqCO"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-btn github"
-                  aria-label="GitHub"
-                >
-                  <Github size={17} />
+            <div className="co-socials-row">
+              {socials.map((s) => (
+                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="co-social">
+                  {s.icon} {s.label}
                 </a>
-                <a
-                  href="https://www.linkedin.com/in/tariq-1712tr"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-btn linkedin"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin size={17} />
-                </a>
-                <a
-                  href="https://www.instagram.com/__tariqrasheed__/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-btn instagram"
-                  aria-label="Instagram"
-                >
-                  <Instagram size={17} />
-                </a>
-                <a
-                  href="https://wa.me/923711175464"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-btn whatsapp"
-                  aria-label="WhatsApp"
-                >
-                  <FaWhatsapp size={18} />
-                </a>
-              </div>
+              ))}
             </div>
           </motion.div>
 
-          {/* ── Footer note ── */}
           <motion.p
-            custom={5}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            className="footer-note"
+            custom={4} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+            className="co-footer co-mono"
           >
-            © {new Date().getFullYear()} Tariq Rasheed · Built with React &
-            Tailwind CSS
+            © {new Date().getFullYear()} Tariq Rasheed — built with React & Tailwind CSS
           </motion.p>
         </div>
 
-        {/* ── Back to top ── */}
-        <button
-          onClick={scrollToTop}
-          className="back-top-btn"
-          aria-label="Back to top"
-        >
-          <ArrowUp size={18} />
+        <button onClick={scrollToTop} className="co-back-top" aria-label="Back to top">
+          <ArrowUp size={17} />
         </button>
       </section>
     </>
